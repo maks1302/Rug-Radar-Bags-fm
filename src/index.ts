@@ -171,7 +171,7 @@ async function bootstrap(): Promise<void> {
     // Public read-only endpoints for status/metadata checks from docs/landing domains.
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Cache-Control, Pragma");
   };
 
   app.options("/health", (_req, res) => {
@@ -186,6 +186,10 @@ async function bootstrap(): Promise<void> {
 
   app.get("/health", (_req, res) => {
     setPublicCors(res);
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("Surrogate-Control", "no-store");
     res.json({ status: "ok", version: VERSION });
   });
 

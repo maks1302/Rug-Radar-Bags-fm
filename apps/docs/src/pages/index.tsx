@@ -34,9 +34,6 @@ export default function Home(): JSX.Element {
         const response = await fetch(healthUrl, {
           method: "GET",
           cache: "no-store",
-          headers: {
-            "cache-control": "no-cache",
-          },
         });
         if (!cancelled) {
           setHealth(response.ok || response.status === 304 ? "healthy" : "unhealthy");
