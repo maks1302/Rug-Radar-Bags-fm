@@ -16,8 +16,8 @@
   },
   "sidebar": "docsSidebar",
   "previous": {
-    "title": "get_token_changes",
-    "permalink": "/docs/tools/get-token-changes"
+    "title": "Using Rug Radar In OpenClaw",
+    "permalink": "/docs/clients/openclaw"
   },
   "next": {
     "title": "Using Rug Radar In Gemini",

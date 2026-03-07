@@ -67,6 +67,9 @@
   border-radius: 12px;
   padding: 10px 14px;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .btnPrimary {
@@ -149,6 +152,10 @@
 .healthText {
   font-size: 0.78rem;
   color: var(--rr-text);
+}
+
+.btnIcon {
+  opacity: 0.9;
 }
 
 :global(:root) {

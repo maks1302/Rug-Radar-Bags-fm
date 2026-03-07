@@ -1,15 +1,15 @@
 {
-  "/docs-617": {
+  "/docs-9c3": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "aba21aa0"
     }
   },
-  "/docs-14a": {
+  "/docs-6c9": {
     "__comp": "a7bd4aaa",
     "__props": "0058b4c6"
   },
-  "/docs-8f7": {
+  "/docs-cc0": {
     "__comp": "a94703ab"
   },
   "/docs/clients/claude-209": {
@@ -19,6 +19,10 @@
   "/docs/clients/gemini-9ca": {
     "__comp": "17896441",
     "content": "ecc4ae19"
+  },
+  "/docs/clients/openclaw-d16": {
+    "__comp": "17896441",
+    "content": "b3792967"
   },
   "/docs/clients/other-clients-f89": {
     "__comp": "17896441",

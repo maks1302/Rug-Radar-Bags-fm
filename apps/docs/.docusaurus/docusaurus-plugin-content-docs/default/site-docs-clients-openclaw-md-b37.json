@@ -1,0 +1,26 @@
+{
+  "id": "clients/openclaw",
+  "title": "Using Rug Radar In OpenClaw",
+  "description": "This page explains how to use Rug Radar in OpenClaw-style agent setups that support remote MCP servers.",
+  "source": "@site/docs/clients/openclaw.md",
+  "sourceDirName": "clients",
+  "slug": "/clients/openclaw",
+  "permalink": "/docs/clients/openclaw",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "openclaw",
+    "title": "Using Rug Radar In OpenClaw"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "get_token_changes",
+    "permalink": "/docs/tools/get-token-changes"
+  },
+  "next": {
+    "title": "Using Rug Radar In Claude",
+    "permalink": "/docs/clients/claude"
+  }
+}

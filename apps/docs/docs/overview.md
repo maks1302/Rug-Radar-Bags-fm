@@ -3,7 +3,7 @@ id: overview
 title: What Rug Radar Does
 ---
 
-Rug Radar is a Claude skill + MCP toolset for quick Solana due diligence.
+Rug Radar is an MCP toolset for quick Solana due diligence across Claude and other MCP-compatible agents.
 
 It helps you answer questions like:
 - Is this token risky?

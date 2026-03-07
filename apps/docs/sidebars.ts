@@ -32,7 +32,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "MCP Clients",
-      items: ["clients/claude", "clients/gemini", "clients/other-clients"],
+      items: ["clients/openclaw", "clients/claude", "clients/gemini", "clients/other-clients"],
     },
     {
       type: "category",

@@ -54,7 +54,7 @@ export default function Home(): JSX.Element {
   }, [healthUrl]);
 
   return (
-    <Layout title="Rug Radar" description="Instant Solana token and wallet due diligence inside Claude.">
+    <Layout title="Rug Radar" description="Instant Solana token and wallet due diligence for Claude and MCP-compatible agents.">
       <main className={styles.page}>
         <div className={styles.bgGrid} />
 
@@ -62,15 +62,28 @@ export default function Home(): JSX.Element {
           <p className={styles.eyebrow}>MCP-Powered Solana Intelligence</p>
           <h1>Stop Guessing. Scan Risk Before You Trade.</h1>
           <p className={styles.lead}>
-            Rug Radar gives retail traders instant token and wallet due diligence inside Claude. No onchain detective
-            work, no dashboard overload, just clear risk signals.
+            Rug Radar gives retail traders instant token and wallet due diligence inside Claude and any MCP-compatible
+            agent. No onchain detective work, no dashboard overload, just clear risk signals.
           </p>
           <div className={styles.ctaRow}>
             <Link className={`${styles.btn} ${styles.btnPrimary}`} to="/docs/quickstart">
               Quickstart
             </Link>
-            <Link className={styles.btn} to="/docs/tools/analyze-token">
-              Explore Tools
+            <Link className={styles.btn} to="/docs/clients/openclaw">
+              <svg
+                className={styles.btnIcon}
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  fill="currentColor"
+                  d="M9 3h6v2h-2v2h4c1.1 0 2 .9 2 2v4h1a1 1 0 1 1 0 2h-1v4c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2v-4H4a1 1 0 1 1 0-2h1V9c0-1.1.9-2 2-2h4V5H9V3Zm-2 6v10h10V9H7Zm3 3a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3Zm4 0a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3Z"
+                />
+              </svg>
+              <span>I am an agent</span>
             </Link>
           </div>
         </section>

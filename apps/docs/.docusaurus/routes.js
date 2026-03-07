@@ -4,15 +4,15 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 export default [
   {
     path: '/docs',
-    component: ComponentCreator('/docs', '617'),
+    component: ComponentCreator('/docs', '9c3'),
     routes: [
       {
         path: '/docs',
-        component: ComponentCreator('/docs', '14a'),
+        component: ComponentCreator('/docs', '6c9'),
         routes: [
           {
             path: '/docs',
-            component: ComponentCreator('/docs', '8f7'),
+            component: ComponentCreator('/docs', 'cc0'),
             routes: [
               {
                 path: '/docs/clients/claude',
@@ -23,6 +23,12 @@ export default [
               {
                 path: '/docs/clients/gemini',
                 component: ComponentCreator('/docs/clients/gemini', '9ca'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/clients/openclaw',
+                component: ComponentCreator('/docs/clients/openclaw', 'd16'),
                 exact: true,
                 sidebar: "docsSidebar"
               },

@@ -5,7 +5,7 @@
  */
 export default {
   "title": "Rug Radar Docs",
-  "tagline": "Instant token and wallet due diligence inside Claude.",
+  "tagline": "Instant token and wallet due diligence for Claude and any MCP-compatible agent.",
   "favicon": "img/logo.svg",
   "url": "https://rugrdr.xyz",
   "baseUrl": "/",

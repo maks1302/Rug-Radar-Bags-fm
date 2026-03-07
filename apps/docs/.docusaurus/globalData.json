@@ -21,6 +21,11 @@
               "sidebar": "docsSidebar"
             },
             {
+              "id": "clients/openclaw",
+              "path": "/docs/clients/openclaw",
+              "sidebar": "docsSidebar"
+            },
+            {
               "id": "clients/other-clients",
               "path": "/docs/clients/other-clients",
               "sidebar": "docsSidebar"

@@ -22,6 +22,7 @@ export default {
   "a7bd4aaa": [() => import(/* webpackChunkName: "a7bd4aaa" */ "@theme/DocVersionRoot"), "@theme/DocVersionRoot", require.resolveWeak("@theme/DocVersionRoot")],
   "a94703ab": [() => import(/* webpackChunkName: "a94703ab" */ "@theme/DocRoot"), "@theme/DocRoot", require.resolveWeak("@theme/DocRoot")],
   "aba21aa0": [() => import(/* webpackChunkName: "aba21aa0" */ "@generated/docusaurus-plugin-content-docs/default/__plugin.json"), "@generated/docusaurus-plugin-content-docs/default/__plugin.json", require.resolveWeak("@generated/docusaurus-plugin-content-docs/default/__plugin.json")],
+  "b3792967": [() => import(/* webpackChunkName: "b3792967" */ "@site/docs/clients/openclaw.md"), "@site/docs/clients/openclaw.md", require.resolveWeak("@site/docs/clients/openclaw.md")],
   "c9d5cba7": [() => import(/* webpackChunkName: "c9d5cba7" */ "@site/docs/data-sources.md"), "@site/docs/data-sources.md", require.resolveWeak("@site/docs/data-sources.md")],
   "e6a954df": [() => import(/* webpackChunkName: "e6a954df" */ "@site/docs/clients/other-clients.md"), "@site/docs/clients/other-clients.md", require.resolveWeak("@site/docs/clients/other-clients.md")],
   "e747ec83": [() => import(/* webpackChunkName: "e747ec83" */ "@site/docs/glossary.md"), "@site/docs/glossary.md", require.resolveWeak("@site/docs/glossary.md")],
