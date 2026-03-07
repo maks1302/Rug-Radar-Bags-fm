@@ -99,6 +99,12 @@ export default function Home(): JSX.Element {
 
         <section className={`${styles.foot} ${styles.container}`}>
           <p>DYOR. Rug Radar is analysis software, not financial advice.</p>
+          <p className={styles.credit}>
+            Built by{" "}
+            <a href="https://dziurax.com" target="_blank" rel="noopener noreferrer">
+              Dziura Labs
+            </a>
+          </p>
         </section>
 
         <div className={styles.healthBadge} aria-live="polite">

@@ -115,6 +115,18 @@
   font-size: 0.84rem;
 }
 
+.credit {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  opacity: 0.45;
+}
+
+.credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(148, 163, 184, 0.35);
+}
+
 .healthBadge {
   position: fixed;
   right: 16px;
