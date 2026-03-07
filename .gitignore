@@ -5,3 +5,12 @@ dist/
 .env
 .DS_Store
 npm-debug.log*
+
+# Docusaurus generated artifacts
+apps/docs/build/
+apps/docs/.docusaurus/
+
+# Common logs and temp artifacts
+*.log
+coverage/
+*.tsbuildinfo
