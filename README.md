@@ -1,194 +1,202 @@
 # Rug Radar
 
-Rug Radar is a production-ready MCP server that gives instant Solana token and wallet due diligence inside Claude. It aggregates live onchain and market signals, then returns structured risk reports that are easy for retail traders to understand and share.
+Instant token and wallet due diligence for Solana, inside Claude.
 
-## Features
+Rug Radar is a production-ready MCP server that turns fragmented onchain data into clear, structured risk intelligence. It helps retail traders quickly answer: _is this token risky, is this wallet credible, and what changed since last check?_
 
-- 6 MCP tools: `analyze_token`, `analyze_wallet`, `scan_risk`, `compare_tokens`, `watch_token`, `get_token_changes`
-- Multi-source analysis: DEX Screener, RugCheck, Helius, Bags
-- Deterministic 0-100 risk scoring engine
-- Partial-data fault tolerance (never empty response)
-- 8-second timeout on all external API requests
-- Simple in-memory caching to reduce duplicate API calls
-- Postgres-backed watchlists, snapshots, alerts, and usage events
-- Upstash Redis alert dedupe layer
-- HTTP health endpoint for Railway/Render
+## Live Deployment
 
-## Local Setup
+- Landing + docs: **https://rugrdr.xyz**
+- MCP endpoint (primary): **https://mcp.rugrdr.xyz**
+- Health check: **https://mcp.rugrdr.xyz/health**
+- API info: **https://mcp.rugrdr.xyz/info**
 
-1. Install dependencies:
+## What Rug Radar Does
 
-```bash
-npm install
-```
+- Aggregates data from:
+  - DEX Screener (market/liquidity/volume)
+  - RugCheck (contract safety/honeypot)
+  - Helius (holders/wallet activity)
+  - Bags (ecosystem/claim activity context)
+- Computes deterministic risk scoring (0-100)
+- Returns partial results gracefully when some sources fail
+- Supports watchlists + change tracking via Postgres
+- Deduplicates noisy alerts with Upstash Redis
 
-2. Create environment file:
-
-```bash
-cp .env.example .env
-```
-
-3. Add keys:
-- `HELIUS_API_KEY` from https://helius.dev
-- `BAGS_API_KEY` (optional but recommended)
-- `DATABASE_URL` (Neon Postgres)
-- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (recommended for alert dedupe)
-
-4. Run database migrations:
-
-```bash
-npm run migrate
-```
-
-5. Run in development:
-
-```bash
-npm run dev
-```
-
-6. Build and run production:
-
-```bash
-npm run build
-npm run start
-```
-
-## Docusaurus Docs App
-
-Comprehensive documentation is scaffolded in `apps/docs` with docs route configured at `/docs`.
-When deployed as the public site, docs app root (`/`) acts as the landing page and docs are available under `/docs`.
-
-Run locally:
-
-```bash
-npm install --prefix apps/docs
-npm run dev --prefix apps/docs
-```
-
-Build:
-
-```bash
-npm run build --prefix apps/docs
-```
-
-## API Keys
-
-- Helius: required for holder + wallet behavior analysis.
-- Bags: optional but supported via live API calls when `BAGS_API_KEY` is set. If unavailable, the server falls back gracefully with partial-data notes.
-- Postgres (`DATABASE_URL`): required for `watch_token` and `get_token_changes`.
-- Upstash Redis: optional but recommended to prevent duplicate alerts during volatility.
-
-## HTTP Endpoints
-
-- `GET /` API info JSON
-- `GET /info` basic service info + available tools
-- `GET /health` returns:
-
-```json
-{ "status": "ok", "version": "1.0.0" }
-```
-
-- `POST /mcp` MCP endpoint for Claude-compatible clients
-
-Production domains:
-- Landing + docs: `https://rugrdr.xyz`
-- MCP API: `https://mcp.rugrdr.xyz`
-- MCP endpoint: `https://mcp.rugrdr.xyz`
-- Health check: `https://mcp.rugrdr.xyz/health`
-
-## Claude Skill Registration
-
-1. Deploy this service to Railway or Render.
-2. Copy deployed base URL (e.g., `https://your-rug-radar.up.railway.app`).
-3. In Claude skill setup, configure MCP server URL to `https://mcp.rugrdr.xyz`.
-4. Add the system prompt from `skill/system-prompt.md`.
-5. Verify tool calls by prompting examples below.
-
-## Available Tools + Example Prompts
+## MCP Tools
 
 ### 1) `analyze_token`
-Input: `token_address` or `token_name`
+Full token risk report by address or name.
 
-Example prompts:
-- `Analyze this token: So11111111111111111111111111111111111111112`
-- `Research BONK`
+### 2) `scan_risk`
+Fast red-flag mode (minimal, high-signal output).
 
-### 2) `analyze_wallet`
-Input: `wallet_address`
-
-Example prompts:
-- `Analyze this wallet: 7Yz...abc`
-- `Is this wallet a whale or a bot? 7Yz...abc`
-
-### 3) `scan_risk`
-Input: `token_address`
-
-Example prompts:
-- `Scan red flags for this token: So11111111111111111111111111111111111111112`
-- `Is this token safe? So11111111111111111111111111111111111111112`
+### 3) `analyze_wallet`
+Wallet behavior classification (`Sniper`, `Whale`, `Bot`, `Insider`, `Retail`) with activity heuristics.
 
 ### 4) `compare_tokens`
-Input: `token_a`, `token_b`
-
-Example prompts:
-- `Compare BONK vs WIF`
-- `Which is healthier: tokenA vs tokenB?`
+Side-by-side health comparison and recommendation.
 
 ### 5) `watch_token`
-Input: `token_address` (+ optional user and thresholds)
-
-Example prompts:
-- `Watch this token and alert me if risk jumps: So11111111111111111111111111111111111111112`
-- `Track BONK with 15% liquidity-drop threshold`
+Create/update watch thresholds and store baseline snapshot.
 
 ### 6) `get_token_changes`
-Input: `token_address` (+ optional `user_id`)
+Compare latest snapshot to previous one and return deltas + triggered alerts.
 
-Example prompts:
-- `What changed since last check for So11111111111111111111111111111111111111112?`
-- `Run delta check and trigger alerts for BONK`
+## Example Prompts (Claude/Gemini/MCP clients)
 
-## Risk Score Model (0-100)
+- `Analyze BONK`
+- `Scan red flags for So11111111111111111111111111111111111111112`
+- `Analyze this wallet: <wallet_address>`
+- `Compare BONK vs WIF`
+- `Watch <token> with 20% liquidity-drop threshold`
+- `What changed since last check for <token>?`
 
-Higher score means more risk.
+## Risk Score Model
+
+Higher score = more risk.
 
 - Holder concentration (35%)
-  - >80% top10 = +35
-  - >60% = +25
-  - >40% = +15
 - Liquidity depth (25%)
-  - <$10k = +25
-  - <$50k = +18
-  - <$200k = +10
 - Contract safety (25%)
-  - honeypot = +25
-  - mint authority active = +10
-  - freeze authority active = +8
-  - unverified = +5
 - Token age (10%)
-  - <24h = +10
-  - <7d = +7
-  - <30d = +3
 - Volume consistency (5%)
-  - spike/no follow through = +5
 
-Risk labels:
+Labels:
 - 0-25: Low Risk
 - 26-50: Medium Risk
 - 51-75: High Risk
 - 76-100: Extreme Risk
 
-## Implementation Notes
+## Architecture
 
-- Added confidence score to risk output based on data-source availability.
-- Added optional bags signal adjustment (small bounded impact) for better context.
-- Added in-memory cache to reduce repeated upstream calls and improve latency.
-- Added wallet clustering/dev concentration heuristics to improve red-flag detection.
-- Bags API integration now pulls creator, lifetime fee-share, claim stats/events, and pool presence signals.
-- Added raw SQL migration flow (`npm run migrate`) for zero-ORM persistence.
-- Added Postgres storage for watchlists, token snapshots, alerts, and tool usage events.
-- Added Redis-based alert dedupe to suppress spammy repeated triggers.
+- `src/index.ts`: MCP server + HTTP endpoints
+- `src/tools/*`: Tool handlers
+- `src/api/*`: External data adapters
+- `src/utils/*`: Risk/format/validation/http utilities
+- `src/db/*`: Raw Postgres + Redis integration
+- `migrations/*`: SQL schema migrations
+- `apps/docs`: Docusaurus landing + docs site
+
+## Repo Structure
+
+```text
+.
+├── apps/
+│   └── docs/                # Landing page + user docs (Docusaurus)
+├── migrations/              # SQL migrations
+├── scripts/                 # Migration runner
+├── skill/                   # Claude skill prompt
+├── src/
+│   ├── api/                 # DEX Screener, RugCheck, Helius, Bags
+│   ├── db/                  # pg + upstash redis repositories
+│   ├── tools/               # MCP tools
+│   ├── utils/               # scoring, validators, HTTP/cache
+│   └── index.ts             # MCP server entry
+├── .env.example
+├── package.json
+└── README.md
+```
+
+## Local Development
+
+### 1) Install dependencies
+
+```bash
+npm install
+npm install --prefix apps/docs
+```
+
+### 2) Configure environment
+
+```bash
+cp .env.example .env
+```
+
+Required for full functionality:
+- `HELIUS_API_KEY`
+- `DATABASE_URL`
+
+Recommended:
+- `BAGS_API_KEY`
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
+### 3) Run migrations
+
+```bash
+npm run migrate
+```
+
+### 4) Start API
+
+```bash
+npm run dev
+```
+
+### 5) Start docs/landing
+
+```bash
+npm run dev --prefix apps/docs
+```
+
+## Build Commands
+
+```bash
+npm run build
+npm run build --prefix apps/docs
+```
+
+## Deployment Split
+
+### Vercel (landing + docs)
+- Project root: `apps/docs`
+- Build: `npm run build`
+- Output: `build`
+- Domain: `rugrdr.xyz`
+
+### Coolify (MCP API)
+- Project root: repository root
+- Build: `npm run build`
+- Start: `npm run start`
+- Port: `3000`
+- Domain: `mcp.rugrdr.xyz`
+
+## Environment Variables
+
+See `.env.example`.
+
+Core variables:
+
+```env
+HELIUS_API_KEY=
+BAGS_API_KEY=
+DATABASE_URL=
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+REDIS_CACHE_TTL_SECONDS=30
+ALERT_DEDUPE_TTL_SECONDS=600
+PORT=3000
+NODE_ENV=development
+```
+
+## Reliability & Error Handling
+
+- All external API calls use timeout + try/catch
+- Partial-data responses returned when a source is unavailable
+- Source-level status notes included in outputs
+- In-memory API caching to reduce repetitive upstream calls
+
+## Security Notes
+
+Current deployment can run without auth for rapid testing.
+For public usage, add API key middleware on MCP endpoint and per-user identity mapping.
+
+## Documentation
+
+User-facing docs live at:
+- https://rugrdr.xyz/docs
 
 ## Disclaimer
 
-Rug Radar is an analysis tool, not a financial advisor. Always DYOR.
+Rug Radar provides analysis, not financial advice. Always DYOR.
