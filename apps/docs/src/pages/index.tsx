@@ -27,6 +27,34 @@ export default function Home(): JSX.Element {
   const [health, setHealth] = React.useState<"healthy" | "unhealthy" | "checking">("checking");
 
   React.useEffect(() => {
+    const setupAnalytics = () => {
+      if (typeof window === "undefined") return;
+      if (document.getElementById("gtag-script")) return;
+
+      const script = document.createElement("script");
+      script.id = "gtag-script";
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-MBPJZ8LX0Q";
+      document.head.appendChild(script);
+
+      const win = window as Window & { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void };
+      win.dataLayer = win.dataLayer || [];
+      win.gtag = function gtag(...args: unknown[]) {
+        win.dataLayer?.push(args);
+      };
+      win.gtag("js", new Date());
+      win.gtag("config", "G-MBPJZ8LX0Q");
+    };
+
+    const idleCallback = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback;
+    if (idleCallback) {
+      idleCallback(setupAnalytics);
+    } else {
+      window.setTimeout(setupAnalytics, 1200);
+    }
+  }, []);
+
+  React.useEffect(() => {
     let cancelled = false;
 
     const check = async () => {
