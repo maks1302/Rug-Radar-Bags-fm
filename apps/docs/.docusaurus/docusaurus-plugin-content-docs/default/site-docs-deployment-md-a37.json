@@ -1,0 +1,26 @@
+{
+  "id": "deployment",
+  "title": "Deployment",
+  "description": "MCP Server",
+  "source": "@site/docs/deployment.md",
+  "sourceDirName": ".",
+  "slug": "/deployment",
+  "permalink": "/docs/deployment",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "deployment",
+    "title": "Deployment"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Database",
+    "permalink": "/docs/database"
+  },
+  "next": {
+    "title": "Security",
+    "permalink": "/docs/security"
+  }
+}

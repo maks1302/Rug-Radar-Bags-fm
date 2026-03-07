@@ -171,8 +171,7 @@ async function bootstrap(): Promise<void> {
     res.json({ status: "ok", version: VERSION });
   });
 
-  app.get("/", (_req, res) => {
-    res.json({
+  const infoPayload = {
       name: "Rug Radar",
       tagline: "Instant token and wallet due diligence inside Claude.",
       version: VERSION,
@@ -187,8 +186,16 @@ async function bootstrap(): Promise<void> {
       endpoints: {
         health: "/health",
         mcp: "/mcp",
+        info: "/info",
       },
-    });
+  };
+
+  app.get("/info", (_req, res) => {
+    res.json(infoPayload);
+  });
+
+  app.get("/", (_req, res) => {
+    res.json(infoPayload);
   });
 
   app.all("/mcp", async (req, res) => {

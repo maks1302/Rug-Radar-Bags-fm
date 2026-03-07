@@ -1,0 +1,57 @@
+:root {
+  --ifm-color-primary: #1f2937;
+  --ifm-color-primary-dark: #111827;
+  --ifm-color-primary-darker: #0f172a;
+  --ifm-color-primary-darkest: #020617;
+  --ifm-color-primary-light: #374151;
+  --ifm-color-primary-lighter: #4b5563;
+  --ifm-color-primary-lightest: #6b7280;
+  --ifm-background-color: #f7f7f5;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #1f2937;
+  --ifm-heading-color: #111827;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.94);
+  --ifm-footer-background-color: transparent;
+  --ifm-code-font-size: 95%;
+}
+
+[data-theme="dark"] {
+  --ifm-color-primary: #b9c2d0;
+  --ifm-background-color: #121315;
+  --ifm-background-surface-color: #1a1c1f;
+  --ifm-font-color-base: #eceef2;
+  --ifm-heading-color: #f5f6f8;
+  --ifm-navbar-background-color: rgba(18, 19, 21, 0.7);
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.navbar-cta .navbar__link {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.82rem;
+  line-height: 1.2;
+}
+
+.navbar-cta--primary .navbar__link {
+  border: 0;
+  color: #031622;
+  background: linear-gradient(90deg, #22d3ee, #67e8f9);
+}
+
+[data-theme="light"] .navbar-cta--primary .navbar__link {
+  color: #111827;
+  background: linear-gradient(90deg, #e5e7eb, #d1d5db);
+}
+
+[data-theme="dark"] .navbar-cta--primary .navbar__link {
+  color: #f5f6f8;
+  background: linear-gradient(90deg, #3a3f47, #555c67);
+}

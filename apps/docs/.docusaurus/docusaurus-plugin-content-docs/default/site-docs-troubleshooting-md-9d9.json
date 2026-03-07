@@ -1,0 +1,26 @@
+{
+  "id": "troubleshooting",
+  "title": "Troubleshooting",
+  "description": "DATABASE_URL is missing",
+  "source": "@site/docs/troubleshooting.md",
+  "sourceDirName": ".",
+  "slug": "/troubleshooting",
+  "permalink": "/docs/troubleshooting",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "troubleshooting",
+    "title": "Troubleshooting"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Observability",
+    "permalink": "/docs/observability"
+  },
+  "next": {
+    "title": "Roadmap",
+    "permalink": "/docs/roadmap"
+  }
+}

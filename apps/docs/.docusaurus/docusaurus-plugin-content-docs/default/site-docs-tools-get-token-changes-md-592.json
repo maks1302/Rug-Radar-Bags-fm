@@ -1,0 +1,26 @@
+{
+  "id": "tools/get-token-changes",
+  "title": "get_token_changes",
+  "description": "Checks what changed since the last snapshot.",
+  "source": "@site/docs/tools/get-token-changes.md",
+  "sourceDirName": "tools",
+  "slug": "/tools/get-token-changes",
+  "permalink": "/docs/tools/get-token-changes",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "get-token-changes",
+    "title": "get_token_changes"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "watch_token",
+    "permalink": "/docs/tools/watch-token"
+  },
+  "next": {
+    "title": "Data Sources Behind Results",
+    "permalink": "/docs/data-sources"
+  }
+}

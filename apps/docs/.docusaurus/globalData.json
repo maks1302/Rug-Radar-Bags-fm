@@ -1,0 +1,93 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "overview",
+          "docs": [
+            {
+              "id": "data-sources",
+              "path": "/docs/data-sources",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "faq",
+              "path": "/docs/faq",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "limitations",
+              "path": "/docs/limitations",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "overview",
+              "path": "/docs/overview",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "prompt-cookbook",
+              "path": "/docs/prompt-cookbook",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "quickstart",
+              "path": "/docs/quickstart",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "reading-reports",
+              "path": "/docs/reading-reports",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "tools/analyze-token",
+              "path": "/docs/tools/analyze-token",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "tools/analyze-wallet",
+              "path": "/docs/tools/analyze-wallet",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "tools/compare-tokens",
+              "path": "/docs/tools/compare-tokens",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "tools/get-token-changes",
+              "path": "/docs/tools/get-token-changes",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "tools/scan-risk",
+              "path": "/docs/tools/scan-risk",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "tools/watch-token",
+              "path": "/docs/tools/watch-token",
+              "sidebar": "docsSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docsSidebar": {
+              "link": {
+                "path": "/docs/overview",
+                "label": "overview"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

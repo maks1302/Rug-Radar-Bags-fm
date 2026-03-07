@@ -1,0 +1,22 @@
+{
+  "id": "roadmap",
+  "title": "Roadmap",
+  "description": "Near-Term",
+  "source": "@site/docs/roadmap.md",
+  "sourceDirName": ".",
+  "slug": "/roadmap",
+  "permalink": "/docs/roadmap",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "roadmap",
+    "title": "Roadmap"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Troubleshooting",
+    "permalink": "/docs/troubleshooting"
+  }
+}

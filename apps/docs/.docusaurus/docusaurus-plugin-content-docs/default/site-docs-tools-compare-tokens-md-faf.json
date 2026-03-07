@@ -1,0 +1,26 @@
+{
+  "id": "tools/compare-tokens",
+  "title": "compare_tokens",
+  "description": "Side-by-side token health comparison.",
+  "source": "@site/docs/tools/compare-tokens.md",
+  "sourceDirName": "tools",
+  "slug": "/tools/compare-tokens",
+  "permalink": "/docs/tools/compare-tokens",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "compare-tokens",
+    "title": "compare_tokens"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "analyze_wallet",
+    "permalink": "/docs/tools/analyze-wallet"
+  },
+  "next": {
+    "title": "watch_token",
+    "permalink": "/docs/tools/watch-token"
+  }
+}

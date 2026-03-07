@@ -1,0 +1,26 @@
+{
+  "id": "database",
+  "title": "Database",
+  "description": "Rug Radar uses raw SQL with Postgres (pg) and no ORM.",
+  "source": "@site/docs/database.md",
+  "sourceDirName": ".",
+  "slug": "/database",
+  "permalink": "/docs/database",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "database",
+    "title": "Database"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "get_token_changes",
+    "permalink": "/docs/tools/get-token-changes"
+  },
+  "next": {
+    "title": "Deployment",
+    "permalink": "/docs/deployment"
+  }
+}

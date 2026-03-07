@@ -1,0 +1,26 @@
+{
+  "id": "prompt-cookbook",
+  "title": "Prompt Cookbook",
+  "description": "Token Research",
+  "source": "@site/docs/prompt-cookbook.md",
+  "sourceDirName": ".",
+  "slug": "/prompt-cookbook",
+  "permalink": "/docs/prompt-cookbook",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "prompt-cookbook",
+    "title": "Prompt Cookbook"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "How To Read Reports",
+    "permalink": "/docs/reading-reports"
+  },
+  "next": {
+    "title": "analyze_token",
+    "permalink": "/docs/tools/analyze-token"
+  }
+}

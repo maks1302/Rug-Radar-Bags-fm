@@ -1,0 +1,26 @@
+{
+  "id": "architecture",
+  "title": "Architecture",
+  "description": "High-Level Components",
+  "source": "@site/docs/architecture.md",
+  "sourceDirName": ".",
+  "slug": "/architecture",
+  "permalink": "/docs/architecture",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "architecture",
+    "title": "Architecture"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Quickstart",
+    "permalink": "/docs/quickstart"
+  },
+  "next": {
+    "title": "Risk Model",
+    "permalink": "/docs/risk-model"
+  }
+}

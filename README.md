@@ -53,6 +53,24 @@ npm run build
 npm run start
 ```
 
+## Docusaurus Docs App
+
+Comprehensive documentation is scaffolded in `apps/docs` with docs route configured at `/docs`.
+When deployed as the public site, docs app root (`/`) acts as the landing page and docs are available under `/docs`.
+
+Run locally:
+
+```bash
+npm install --prefix apps/docs
+npm run dev --prefix apps/docs
+```
+
+Build:
+
+```bash
+npm run build --prefix apps/docs
+```
+
 ## API Keys
 
 - Helius: required for holder + wallet behavior analysis.
@@ -62,7 +80,8 @@ npm run start
 
 ## HTTP Endpoints
 
-- `GET /` basic service info + available tools
+- `GET /` API info JSON
+- `GET /info` basic service info + available tools
 - `GET /health` returns:
 
 ```json

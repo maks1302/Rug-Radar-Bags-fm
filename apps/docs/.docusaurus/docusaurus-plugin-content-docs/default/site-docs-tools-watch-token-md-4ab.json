@@ -1,0 +1,26 @@
+{
+  "id": "tools/watch-token",
+  "title": "watch_token",
+  "description": "Creates monitoring rules for a token.",
+  "source": "@site/docs/tools/watch-token.md",
+  "sourceDirName": "tools",
+  "slug": "/tools/watch-token",
+  "permalink": "/docs/tools/watch-token",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "watch-token",
+    "title": "watch_token"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "compare_tokens",
+    "permalink": "/docs/tools/compare-tokens"
+  },
+  "next": {
+    "title": "get_token_changes",
+    "permalink": "/docs/tools/get-token-changes"
+  }
+}

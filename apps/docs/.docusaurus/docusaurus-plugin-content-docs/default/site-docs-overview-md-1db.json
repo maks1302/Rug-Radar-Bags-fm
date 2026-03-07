@@ -1,0 +1,22 @@
+{
+  "id": "overview",
+  "title": "What Rug Radar Does",
+  "description": "Rug Radar is a Claude skill + MCP toolset for quick Solana due diligence.",
+  "source": "@site/docs/overview.md",
+  "sourceDirName": ".",
+  "slug": "/overview",
+  "permalink": "/docs/overview",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "overview",
+    "title": "What Rug Radar Does"
+  },
+  "sidebar": "docsSidebar",
+  "next": {
+    "title": "Quickstart In Claude",
+    "permalink": "/docs/quickstart"
+  }
+}
