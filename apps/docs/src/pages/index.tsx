@@ -31,9 +31,15 @@ export default function Home(): JSX.Element {
 
     const check = async () => {
       try {
-        const response = await fetch(healthUrl, { method: "GET" });
+        const response = await fetch(healthUrl, {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            "cache-control": "no-cache",
+          },
+        });
         if (!cancelled) {
-          setHealth(response.ok ? "healthy" : "unhealthy");
+          setHealth(response.ok || response.status === 304 ? "healthy" : "unhealthy");
         }
       } catch (_error) {
         if (!cancelled) {
