@@ -16,11 +16,11 @@
   },
   "sidebar": "docsSidebar",
   "previous": {
-    "title": "Data Sources Behind Results",
-    "permalink": "/docs/data-sources"
+    "title": "Common False Positives",
+    "permalink": "/docs/false-positives"
   },
   "next": {
-    "title": "FAQ",
-    "permalink": "/docs/faq"
+    "title": "Glossary",
+    "permalink": "/docs/glossary"
   }
 }

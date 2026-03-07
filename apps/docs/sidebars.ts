@@ -4,8 +4,19 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     "overview",
     "quickstart",
-    "reading-reports",
-    "prompt-cookbook",
+    {
+      type: "category",
+      label: "Guides",
+      items: [
+        "reading-reports",
+        "trust-vs-wait",
+        "risk-examples",
+        "playbooks",
+        "monitoring-workflow",
+        "prompt-cookbook",
+        "sharing-format",
+      ],
+    },
     {
       type: "category",
       label: "Tools",
@@ -18,9 +29,16 @@ const sidebars: SidebarsConfig = {
         "tools/get-token-changes",
       ],
     },
-    "data-sources",
-    "limitations",
-    "faq",
+    {
+      type: "category",
+      label: "MCP Clients",
+      items: ["clients/claude", "clients/gemini", "clients/other-clients"],
+    },
+    {
+      type: "category",
+      label: "Reference",
+      items: ["data-sources", "false-positives", "limitations", "glossary", "faq"],
+    },
   ],
 };
 

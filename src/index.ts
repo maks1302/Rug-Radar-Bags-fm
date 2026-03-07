@@ -194,11 +194,17 @@ async function bootstrap(): Promise<void> {
     res.json(infoPayload);
   });
 
-  app.get("/", (_req, res) => {
+  app.get("/", (_req, res, next) => {
+    const acceptsMcp =
+      typeof _req.headers.accept === "string" &&
+      (_req.headers.accept.includes("application/json") || _req.headers.accept.includes("application/*"));
+    if (_req.method !== "GET" || acceptsMcp) {
+      return next();
+    }
     res.json(infoPayload);
   });
 
-  app.all("/mcp", async (req, res) => {
+  const handleMcpRequest = async (req: express.Request, res: express.Response) => {
     const sessionId = req.headers["mcp-session-id"] as string | undefined;
     let transport: StreamableHTTPServerTransport;
 
@@ -231,7 +237,11 @@ async function bootstrap(): Promise<void> {
         res.status(500).json({ error: "MCP transport error" });
       }
     }
-  });
+  };
+
+  // Support both dedicated subdomain root endpoint and /mcp path.
+  app.all("/mcp", handleMcpRequest);
+  app.all("/", handleMcpRequest);
 
   app.listen(PORT, () => {
     console.log(`Rug Radar server listening on port ${PORT}`);

@@ -7,7 +7,7 @@ const config: Config = {
   tagline: "Instant token and wallet due diligence inside Claude.",
   favicon: "img/logo.svg",
 
-  url: "https://rugradar.example",
+  url: "https://rugrdr.xyz",
   baseUrl: "/",
 
   organizationName: "rug-radar",
@@ -45,7 +45,7 @@ const config: Config = {
           className: "navbar-cta navbar-cta--primary",
         },
         {
-          href: "https://api.rugradar.example/mcp",
+          href: "https://mcp.rugrdr.xyz",
           label: "Try MCP",
           position: "right",
           className: "navbar-cta",

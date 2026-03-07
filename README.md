@@ -90,11 +90,17 @@ npm run build --prefix apps/docs
 
 - `POST /mcp` MCP endpoint for Claude-compatible clients
 
+Production domains:
+- Landing + docs: `https://rugrdr.xyz`
+- MCP API: `https://mcp.rugrdr.xyz`
+- MCP endpoint: `https://mcp.rugrdr.xyz`
+- Health check: `https://mcp.rugrdr.xyz/health`
+
 ## Claude Skill Registration
 
 1. Deploy this service to Railway or Render.
 2. Copy deployed base URL (e.g., `https://your-rug-radar.up.railway.app`).
-3. In Claude skill setup, configure MCP server URL to `https://.../mcp`.
+3. In Claude skill setup, configure MCP server URL to `https://mcp.rugrdr.xyz`.
 4. Add the system prompt from `skill/system-prompt.md`.
 5. Verify tool calls by prompting examples below.
 

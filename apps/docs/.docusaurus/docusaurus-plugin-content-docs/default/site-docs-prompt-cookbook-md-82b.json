@@ -16,11 +16,11 @@
   },
   "sidebar": "docsSidebar",
   "previous": {
-    "title": "How To Read Reports",
-    "permalink": "/docs/reading-reports"
+    "title": "Watch And Change Workflow",
+    "permalink": "/docs/monitoring-workflow"
   },
   "next": {
-    "title": "analyze_token",
-    "permalink": "/docs/tools/analyze-token"
+    "title": "Share-Ready Format",
+    "permalink": "/docs/sharing-format"
   }
 }

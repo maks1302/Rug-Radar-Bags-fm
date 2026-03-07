@@ -16,11 +16,11 @@
   },
   "sidebar": "docsSidebar",
   "previous": {
-    "title": "Quickstart In Claude",
+    "title": "Quickstart In 3 Minutes",
     "permalink": "/docs/quickstart"
   },
   "next": {
-    "title": "Prompt Cookbook",
-    "permalink": "/docs/prompt-cookbook"
+    "title": "When To Trust Vs Wait",
+    "permalink": "/docs/trust-vs-wait"
   }
 }

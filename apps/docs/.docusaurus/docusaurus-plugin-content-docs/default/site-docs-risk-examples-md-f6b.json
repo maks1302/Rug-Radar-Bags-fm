@@ -1,0 +1,26 @@
+{
+  "id": "risk-examples",
+  "title": "Risk Score Examples",
+  "description": "Use these examples to interpret outputs quickly.",
+  "source": "@site/docs/risk-examples.md",
+  "sourceDirName": ".",
+  "slug": "/risk-examples",
+  "permalink": "/docs/risk-examples",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "risk-examples",
+    "title": "Risk Score Examples"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "When To Trust Vs Wait",
+    "permalink": "/docs/trust-vs-wait"
+  },
+  "next": {
+    "title": "User Playbooks",
+    "permalink": "/docs/playbooks"
+  }
+}

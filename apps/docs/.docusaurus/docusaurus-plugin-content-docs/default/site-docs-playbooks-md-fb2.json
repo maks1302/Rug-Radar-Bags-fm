@@ -1,0 +1,26 @@
+{
+  "id": "playbooks",
+  "title": "User Playbooks",
+  "description": "Beginner Playbook",
+  "source": "@site/docs/playbooks.md",
+  "sourceDirName": ".",
+  "slug": "/playbooks",
+  "permalink": "/docs/playbooks",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "playbooks",
+    "title": "User Playbooks"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Risk Score Examples",
+    "permalink": "/docs/risk-examples"
+  },
+  "next": {
+    "title": "Watch And Change Workflow",
+    "permalink": "/docs/monitoring-workflow"
+  }
+}

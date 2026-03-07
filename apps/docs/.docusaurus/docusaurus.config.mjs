@@ -7,7 +7,7 @@ export default {
   "title": "Rug Radar Docs",
   "tagline": "Instant token and wallet due diligence inside Claude.",
   "favicon": "img/logo.svg",
-  "url": "https://rugradar.example",
+  "url": "https://rugrdr.xyz",
   "baseUrl": "/",
   "organizationName": "rug-radar",
   "projectName": "rug-radar-docs",
@@ -58,7 +58,7 @@ export default {
           "className": "navbar-cta navbar-cta--primary"
         },
         {
-          "href": "https://api.rugradar.example/mcp",
+          "href": "https://mcp.rugrdr.xyz",
           "label": "Try MCP",
           "position": "right",
           "className": "navbar-cta"

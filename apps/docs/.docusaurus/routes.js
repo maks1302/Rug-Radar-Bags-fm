@@ -4,19 +4,43 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 export default [
   {
     path: '/docs',
-    component: ComponentCreator('/docs', '896'),
+    component: ComponentCreator('/docs', '617'),
     routes: [
       {
         path: '/docs',
-        component: ComponentCreator('/docs', '819'),
+        component: ComponentCreator('/docs', '14a'),
         routes: [
           {
             path: '/docs',
-            component: ComponentCreator('/docs', '8b7'),
+            component: ComponentCreator('/docs', '8f7'),
             routes: [
+              {
+                path: '/docs/clients/claude',
+                component: ComponentCreator('/docs/clients/claude', '209'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/clients/gemini',
+                component: ComponentCreator('/docs/clients/gemini', '9ca'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/clients/other-clients',
+                component: ComponentCreator('/docs/clients/other-clients', 'f89'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
               {
                 path: '/docs/data-sources',
                 component: ComponentCreator('/docs/data-sources', '682'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/false-positives',
+                component: ComponentCreator('/docs/false-positives', '603'),
                 exact: true,
                 sidebar: "docsSidebar"
               },
@@ -27,14 +51,32 @@ export default [
                 sidebar: "docsSidebar"
               },
               {
+                path: '/docs/glossary',
+                component: ComponentCreator('/docs/glossary', '628'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
                 path: '/docs/limitations',
                 component: ComponentCreator('/docs/limitations', 'a73'),
                 exact: true,
                 sidebar: "docsSidebar"
               },
               {
+                path: '/docs/monitoring-workflow',
+                component: ComponentCreator('/docs/monitoring-workflow', '53d'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
                 path: '/docs/overview',
                 component: ComponentCreator('/docs/overview', 'bdc'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/playbooks',
+                component: ComponentCreator('/docs/playbooks', '03e'),
                 exact: true,
                 sidebar: "docsSidebar"
               },
@@ -53,6 +95,18 @@ export default [
               {
                 path: '/docs/reading-reports',
                 component: ComponentCreator('/docs/reading-reports', 'f2d'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/risk-examples',
+                component: ComponentCreator('/docs/risk-examples', '0f0'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/sharing-format',
+                component: ComponentCreator('/docs/sharing-format', '58a'),
                 exact: true,
                 sidebar: "docsSidebar"
               },
@@ -89,6 +143,12 @@ export default [
               {
                 path: '/docs/tools/watch-token',
                 component: ComponentCreator('/docs/tools/watch-token', '91f'),
+                exact: true,
+                sidebar: "docsSidebar"
+              },
+              {
+                path: '/docs/trust-vs-wait',
+                component: ComponentCreator('/docs/trust-vs-wait', '002'),
                 exact: true,
                 sidebar: "docsSidebar"
               }

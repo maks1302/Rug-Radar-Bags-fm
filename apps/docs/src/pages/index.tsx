@@ -23,7 +23,7 @@ const toolCards = [
 ];
 
 export default function Home(): JSX.Element {
-  const healthUrl = "https://api.rugradar.example/health";
+  const healthUrl = "https://mcp.rugrdr.xyz/health";
   const [health, setHealth] = React.useState<"healthy" | "unhealthy" | "checking">("checking");
 
   React.useEffect(() => {

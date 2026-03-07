@@ -16,11 +16,11 @@
   },
   "sidebar": "docsSidebar",
   "previous": {
-    "title": "get_token_changes",
-    "permalink": "/docs/tools/get-token-changes"
+    "title": "Other MCP Clients",
+    "permalink": "/docs/clients/other-clients"
   },
   "next": {
-    "title": "Limitations",
-    "permalink": "/docs/limitations"
+    "title": "Common False Positives",
+    "permalink": "/docs/false-positives"
   }
 }

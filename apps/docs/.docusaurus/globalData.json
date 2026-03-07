@@ -11,8 +11,28 @@
           "mainDocId": "overview",
           "docs": [
             {
+              "id": "clients/claude",
+              "path": "/docs/clients/claude",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "clients/gemini",
+              "path": "/docs/clients/gemini",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "clients/other-clients",
+              "path": "/docs/clients/other-clients",
+              "sidebar": "docsSidebar"
+            },
+            {
               "id": "data-sources",
               "path": "/docs/data-sources",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "false-positives",
+              "path": "/docs/false-positives",
               "sidebar": "docsSidebar"
             },
             {
@@ -21,13 +41,28 @@
               "sidebar": "docsSidebar"
             },
             {
+              "id": "glossary",
+              "path": "/docs/glossary",
+              "sidebar": "docsSidebar"
+            },
+            {
               "id": "limitations",
               "path": "/docs/limitations",
               "sidebar": "docsSidebar"
             },
             {
+              "id": "monitoring-workflow",
+              "path": "/docs/monitoring-workflow",
+              "sidebar": "docsSidebar"
+            },
+            {
               "id": "overview",
               "path": "/docs/overview",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "playbooks",
+              "path": "/docs/playbooks",
               "sidebar": "docsSidebar"
             },
             {
@@ -43,6 +78,16 @@
             {
               "id": "reading-reports",
               "path": "/docs/reading-reports",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "risk-examples",
+              "path": "/docs/risk-examples",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "sharing-format",
+              "path": "/docs/sharing-format",
               "sidebar": "docsSidebar"
             },
             {
@@ -73,6 +118,11 @@
             {
               "id": "tools/watch-token",
               "path": "/docs/tools/watch-token",
+              "sidebar": "docsSidebar"
+            },
+            {
+              "id": "trust-vs-wait",
+              "path": "/docs/trust-vs-wait",
               "sidebar": "docsSidebar"
             }
           ],

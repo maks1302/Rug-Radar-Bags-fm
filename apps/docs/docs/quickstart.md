@@ -1,36 +1,42 @@
 ---
 id: quickstart
-title: Quickstart In Claude
+title: Quickstart In 3 Minutes
 ---
 
-## 1. Ask a Direct Question
+This guide is for users who want useful output fast.
 
-Start with natural prompts like:
-- `Analyze BONK`
-- `Scan red flags for <token address>`
-- `Analyze this wallet: <wallet address>`
-- `Compare BONK vs WIF`
+## Step 1: Start With A Token Check
 
-## 2. Use The Right Tool Intent
+Prompt:
 
-- Deep report: `analyze_token`
-- Fast safety check: `scan_risk`
-- Wallet behavior: `analyze_wallet`
-- Side-by-side pick: `compare_tokens`
-- Save monitoring rules: `watch_token`
-- Check what changed: `get_token_changes`
+`Analyze <token address> and give me a plain-English verdict.`
 
-## 3. Read The Verdict + Flags
+Why: this gives the most complete first snapshot.
 
-Focus first on:
-- Risk score + label
-- Top red flags
-- Data availability notes
+## Step 2: Run Fast Risk Mode
 
-## 4. Re-check Before Trading
+Prompt:
 
-For volatile tokens, run:
-- `watch_token` once
-- `get_token_changes` periodically
+`Scan red flags for <token address>. Keep it short.`
 
-This catches late changes like liquidity drops or authority flips.
+Why: this isolates high-signal risk triggers.
+
+## Step 3: Compare Alternatives
+
+Prompt:
+
+`Compare <token A> vs <token B> and pick the healthier one.`
+
+Why: relative comparison is often more actionable than single-token analysis.
+
+## Optional: Watch For Changes
+
+If you are monitoring a token over time:
+
+1. `Watch <token> with 20% liquidity-drop threshold.`
+2. `What changed since last check for <token>?`
+
+## Golden Rule
+
+Use Rug Radar to reduce blind spots, not to outsource judgment.
+Always DYOR and manage risk size.

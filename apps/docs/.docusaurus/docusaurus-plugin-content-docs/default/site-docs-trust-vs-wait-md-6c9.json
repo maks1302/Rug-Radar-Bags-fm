@@ -1,0 +1,26 @@
+{
+  "id": "trust-vs-wait",
+  "title": "When To Trust Vs Wait",
+  "description": "Trust The Output More When",
+  "source": "@site/docs/trust-vs-wait.md",
+  "sourceDirName": ".",
+  "slug": "/trust-vs-wait",
+  "permalink": "/docs/trust-vs-wait",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "trust-vs-wait",
+    "title": "When To Trust Vs Wait"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "How To Read Reports",
+    "permalink": "/docs/reading-reports"
+  },
+  "next": {
+    "title": "Risk Score Examples",
+    "permalink": "/docs/risk-examples"
+  }
+}

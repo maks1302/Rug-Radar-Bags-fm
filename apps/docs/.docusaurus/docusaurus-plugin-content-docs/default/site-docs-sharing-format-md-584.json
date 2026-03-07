@@ -1,0 +1,26 @@
+{
+  "id": "sharing-format",
+  "title": "Share-Ready Format",
+  "description": "Use this style for X/Discord/Telegram.",
+  "source": "@site/docs/sharing-format.md",
+  "sourceDirName": ".",
+  "slug": "/sharing-format",
+  "permalink": "/docs/sharing-format",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "sharing-format",
+    "title": "Share-Ready Format"
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Prompt Cookbook",
+    "permalink": "/docs/prompt-cookbook"
+  },
+  "next": {
+    "title": "analyze_token",
+    "permalink": "/docs/tools/analyze-token"
+  }
+}
