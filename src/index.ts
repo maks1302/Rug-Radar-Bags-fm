@@ -167,7 +167,25 @@ async function bootstrap(): Promise<void> {
 
   const transports = new Map<string, StreamableHTTPServerTransport>();
 
+  const setPublicCors = (res: express.Response) => {
+    // Public read-only endpoints for status/metadata checks from docs/landing domains.
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  };
+
+  app.options("/health", (_req, res) => {
+    setPublicCors(res);
+    res.status(204).end();
+  });
+
+  app.options("/info", (_req, res) => {
+    setPublicCors(res);
+    res.status(204).end();
+  });
+
   app.get("/health", (_req, res) => {
+    setPublicCors(res);
     res.json({ status: "ok", version: VERSION });
   });
 
@@ -191,6 +209,7 @@ async function bootstrap(): Promise<void> {
   };
 
   app.get("/info", (_req, res) => {
+    setPublicCors(res);
     res.json(infoPayload);
   });
 
