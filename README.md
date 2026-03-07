@@ -1,0 +1,140 @@
+# Rug Radar
+
+Rug Radar is a production-ready MCP server that gives instant Solana token and wallet due diligence inside Claude. It aggregates live onchain and market signals, then returns structured risk reports that are easy for retail traders to understand and share.
+
+## Features
+
+- 4 MCP tools: `analyze_token`, `analyze_wallet`, `scan_risk`, `compare_tokens`
+- Multi-source analysis: DEX Screener, RugCheck, Helius, Bags (stubbed fallback)
+- Deterministic 0-100 risk scoring engine
+- Partial-data fault tolerance (never empty response)
+- 8-second timeout on all external API requests
+- Simple in-memory caching to reduce duplicate API calls
+- HTTP health endpoint for Railway/Render
+
+## Local Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create environment file:
+
+```bash
+cp .env.example .env
+```
+
+3. Add keys:
+- `HELIUS_API_KEY` from https://helius.dev
+- `BAGS_API_KEY` (optional until Bags endpoint is finalized)
+
+4. Run in development:
+
+```bash
+npm run dev
+```
+
+5. Build and run production:
+
+```bash
+npm run build
+npm run start
+```
+
+## API Keys
+
+- Helius: required for holder + wallet behavior analysis.
+- Bags: optional in current version (fallback mock mode is used if key or endpoint is unavailable).
+
+## HTTP Endpoints
+
+- `GET /` basic service info + available tools
+- `GET /health` returns:
+
+```json
+{ "status": "ok", "version": "1.0.0" }
+```
+
+- `POST /mcp` MCP endpoint for Claude-compatible clients
+
+## Claude Skill Registration
+
+1. Deploy this service to Railway or Render.
+2. Copy deployed base URL (e.g., `https://your-rug-radar.up.railway.app`).
+3. In Claude skill setup, configure MCP server URL to `https://.../mcp`.
+4. Add the system prompt from `skill/system-prompt.md`.
+5. Verify tool calls by prompting examples below.
+
+## Available Tools + Example Prompts
+
+### 1) `analyze_token`
+Input: `token_address` or `token_name`
+
+Example prompts:
+- `Analyze this token: So11111111111111111111111111111111111111112`
+- `Research BONK`
+
+### 2) `analyze_wallet`
+Input: `wallet_address`
+
+Example prompts:
+- `Analyze this wallet: 7Yz...abc`
+- `Is this wallet a whale or a bot? 7Yz...abc`
+
+### 3) `scan_risk`
+Input: `token_address`
+
+Example prompts:
+- `Scan red flags for this token: So11111111111111111111111111111111111111112`
+- `Is this token safe? So11111111111111111111111111111111111111112`
+
+### 4) `compare_tokens`
+Input: `token_a`, `token_b`
+
+Example prompts:
+- `Compare BONK vs WIF`
+- `Which is healthier: tokenA vs tokenB?`
+
+## Risk Score Model (0-100)
+
+Higher score means more risk.
+
+- Holder concentration (35%)
+  - >80% top10 = +35
+  - >60% = +25
+  - >40% = +15
+- Liquidity depth (25%)
+  - <$10k = +25
+  - <$50k = +18
+  - <$200k = +10
+- Contract safety (25%)
+  - honeypot = +25
+  - mint authority active = +10
+  - freeze authority active = +8
+  - unverified = +5
+- Token age (10%)
+  - <24h = +10
+  - <7d = +7
+  - <30d = +3
+- Volume consistency (5%)
+  - spike/no follow through = +5
+
+Risk labels:
+- 0-25: Low Risk
+- 26-50: Medium Risk
+- 51-75: High Risk
+- 76-100: Extreme Risk
+
+## Implementation Notes
+
+- Added confidence score to risk output based on data-source availability.
+- Added optional bags signal adjustment (small bounded impact) for better context.
+- Added in-memory cache to reduce repeated upstream calls and improve latency.
+- Added wallet clustering/dev concentration heuristics to improve red-flag detection.
+- Bags API integration is currently a safe stub with TODO until final endpoint confirmation.
+
+## Disclaimer
+
+Rug Radar is an analysis tool, not a financial advisor. Always DYOR.
