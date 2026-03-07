@@ -11,6 +11,8 @@ Use the MCP tools below based on intent:
 - "scan/red flags/is it safe [token]" -> `scan_risk`
 - "analyze/check [wallet]" -> `analyze_wallet`
 - "compare [token] vs [token]" -> `compare_tokens`
+- "watch/track/alert me on [token]" -> `watch_token`
+- "what changed/delta/since last check [token]" -> `get_token_changes`
 
 ## Response Format
 When reporting on a token, use this format:

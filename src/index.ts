@@ -10,6 +10,8 @@ import { analyzeToken, analyzeTokenErrorFallback } from "./tools/analyzeToken.js
 import { analyzeWallet } from "./tools/analyzeWallet.js";
 import { scanRisk } from "./tools/scanRisk.js";
 import { compareTokens } from "./tools/compareTokens.js";
+import { watchToken } from "./tools/watchToken.js";
+import { getTokenChanges } from "./tools/getTokenChanges.js";
 
 const VERSION = "1.0.0";
 const PORT = Number(process.env.PORT ?? 3000);
@@ -50,6 +52,60 @@ function createMcpServer(): McpServer {
         const message = error instanceof Error ? error.message : "Unknown analyze_token error";
         const fallback = analyzeTokenErrorFallback(args, message);
         return jsonToolResult(fallback);
+      }
+    },
+  );
+
+  server.registerTool(
+    "watch_token",
+    {
+      title: "Watch Token",
+      description: "Creates or updates a DB-backed watch rule set for a token and stores a baseline snapshot.",
+      inputSchema: {
+        token_address: z.string(),
+        user_id: z.string().optional(),
+        liquidity_drop_percent: z.number().optional(),
+        risk_score_increase: z.number().optional(),
+        holder_concentration_increase: z.number().optional(),
+        alert_on_authority_change: z.boolean().optional(),
+        alert_on_honeypot: z.boolean().optional(),
+      },
+    },
+    async (args) => {
+      try {
+        const result = await watchToken(args);
+        return jsonToolResult(result);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown watch_token error";
+        return jsonToolResult({
+          error: message,
+          note: "watch_token requires DATABASE_URL and successful DB migration.",
+        });
+      }
+    },
+  );
+
+  server.registerTool(
+    "get_token_changes",
+    {
+      title: "Get Token Changes",
+      description:
+        "Loads previous token snapshot from DB, computes risk/liquidity/holder deltas, and triggers watchlist alerts.",
+      inputSchema: {
+        token_address: z.string(),
+        user_id: z.string().optional(),
+      },
+    },
+    async (args) => {
+      try {
+        const result = await getTokenChanges(args);
+        return jsonToolResult(result);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown get_token_changes error";
+        return jsonToolResult({
+          error: message,
+          note: "get_token_changes requires DATABASE_URL, DB migration, and baseline snapshots.",
+        });
       }
     },
   );
@@ -120,7 +176,14 @@ async function bootstrap(): Promise<void> {
       name: "Rug Radar",
       tagline: "Instant token and wallet due diligence inside Claude.",
       version: VERSION,
-      tools: ["analyze_token", "analyze_wallet", "scan_risk", "compare_tokens"],
+      tools: [
+        "analyze_token",
+        "analyze_wallet",
+        "scan_risk",
+        "compare_tokens",
+        "watch_token",
+        "get_token_changes",
+      ],
       endpoints: {
         health: "/health",
         mcp: "/mcp",

@@ -82,10 +82,10 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
   const bagsPromise = (async () => {
     try {
       const snap = await fetchBagsData(resolvedAddress);
-      if (snap.notes.toLowerCase().includes("unavailable")) {
+      if (snap.status === "unavailable") {
         sources.push({ source: "bags", status: "unavailable", note: snap.notes });
       } else {
-        sources.push({ source: "bags", status: "ok" });
+        sources.push({ source: "bags", status: "ok", note: snap.notes });
       }
       return snap;
     } catch (error) {
@@ -151,6 +151,20 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
   if (bags && bags.communityScore !== null && bags.communityScore >= 70) {
     risk.bullishSignals.push("Strong bags ecosystem community score");
     risk.score = Math.max(0, risk.score - 3);
+  }
+  if (bags && bags.hasBagsPool === false) {
+    risk.redFlags.push("No Bags pool found for token mint");
+    risk.score = Math.min(100, risk.score + 3);
+  }
+  if (bags && bags.creatorClaimSharePct !== null && bags.creatorClaimSharePct > 70) {
+    risk.redFlags.push(`Creator claim share is high (${bags.creatorClaimSharePct.toFixed(1)}%)`);
+    risk.score = Math.min(100, risk.score + 4);
+  }
+  if (bags && bags.uniqueClaimers !== null && bags.uniqueClaimers > 30) {
+    risk.bullishSignals.push(`Strong fee-share participation (${bags.uniqueClaimers} unique claimers)`);
+  }
+  if (bags && bags.feeTrend === "up") {
+    risk.bullishSignals.push("Bags fee-share claim activity is trending up");
   }
 
   const unavailableSources = sources

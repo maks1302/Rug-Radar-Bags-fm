@@ -4,12 +4,14 @@ Rug Radar is a production-ready MCP server that gives instant Solana token and w
 
 ## Features
 
-- 4 MCP tools: `analyze_token`, `analyze_wallet`, `scan_risk`, `compare_tokens`
-- Multi-source analysis: DEX Screener, RugCheck, Helius, Bags (stubbed fallback)
+- 6 MCP tools: `analyze_token`, `analyze_wallet`, `scan_risk`, `compare_tokens`, `watch_token`, `get_token_changes`
+- Multi-source analysis: DEX Screener, RugCheck, Helius, Bags
 - Deterministic 0-100 risk scoring engine
 - Partial-data fault tolerance (never empty response)
 - 8-second timeout on all external API requests
 - Simple in-memory caching to reduce duplicate API calls
+- Postgres-backed watchlists, snapshots, alerts, and usage events
+- Upstash Redis alert dedupe layer
 - HTTP health endpoint for Railway/Render
 
 ## Local Setup
@@ -28,15 +30,23 @@ cp .env.example .env
 
 3. Add keys:
 - `HELIUS_API_KEY` from https://helius.dev
-- `BAGS_API_KEY` (optional until Bags endpoint is finalized)
+- `BAGS_API_KEY` (optional but recommended)
+- `DATABASE_URL` (Neon Postgres)
+- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (recommended for alert dedupe)
 
-4. Run in development:
+4. Run database migrations:
+
+```bash
+npm run migrate
+```
+
+5. Run in development:
 
 ```bash
 npm run dev
 ```
 
-5. Build and run production:
+6. Build and run production:
 
 ```bash
 npm run build
@@ -46,7 +56,9 @@ npm run start
 ## API Keys
 
 - Helius: required for holder + wallet behavior analysis.
-- Bags: optional in current version (fallback mock mode is used if key or endpoint is unavailable).
+- Bags: optional but supported via live API calls when `BAGS_API_KEY` is set. If unavailable, the server falls back gracefully with partial-data notes.
+- Postgres (`DATABASE_URL`): required for `watch_token` and `get_token_changes`.
+- Upstash Redis: optional but recommended to prevent duplicate alerts during volatility.
 
 ## HTTP Endpoints
 
@@ -97,6 +109,20 @@ Example prompts:
 - `Compare BONK vs WIF`
 - `Which is healthier: tokenA vs tokenB?`
 
+### 5) `watch_token`
+Input: `token_address` (+ optional user and thresholds)
+
+Example prompts:
+- `Watch this token and alert me if risk jumps: So11111111111111111111111111111111111111112`
+- `Track BONK with 15% liquidity-drop threshold`
+
+### 6) `get_token_changes`
+Input: `token_address` (+ optional `user_id`)
+
+Example prompts:
+- `What changed since last check for So11111111111111111111111111111111111111112?`
+- `Run delta check and trigger alerts for BONK`
+
 ## Risk Score Model (0-100)
 
 Higher score means more risk.
@@ -133,7 +159,10 @@ Risk labels:
 - Added optional bags signal adjustment (small bounded impact) for better context.
 - Added in-memory cache to reduce repeated upstream calls and improve latency.
 - Added wallet clustering/dev concentration heuristics to improve red-flag detection.
-- Bags API integration is currently a safe stub with TODO until final endpoint confirmation.
+- Bags API integration now pulls creator, lifetime fee-share, claim stats/events, and pool presence signals.
+- Added raw SQL migration flow (`npm run migrate`) for zero-ORM persistence.
+- Added Postgres storage for watchlists, token snapshots, alerts, and tool usage events.
+- Added Redis-based alert dedupe to suppress spammy repeated triggers.
 
 ## Disclaimer
 
