@@ -45,6 +45,12 @@ const config: Config = {
           className: "navbar-cta navbar-cta--primary",
         },
         {
+          to: "/docs/roadmap",
+          label: "🗺 Roadmap",
+          position: "right",
+          className: "navbar-cta",
+        },
+        {
           href: "https://mcp.rugrdr.xyz",
           label: "Try MCP",
           position: "right",

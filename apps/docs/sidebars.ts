@@ -4,6 +4,7 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     "overview",
     "quickstart",
+    "roadmap",
     {
       type: "category",
       label: "Guides",
