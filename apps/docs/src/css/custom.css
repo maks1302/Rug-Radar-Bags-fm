@@ -32,26 +32,155 @@
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
 
+.navbar-cta.navbar__link,
 .navbar-cta .navbar__link {
-  border: 1px solid rgba(148, 163, 184, 0.35);
+  border: 0;
   border-radius: 999px;
   padding: 0.35rem 0.8rem;
   font-size: 0.82rem;
   line-height: 1.2;
 }
 
+.navbar-icon.navbar__link,
+.navbar-icon .navbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+}
+
+.navbar-icon.navbar__link::before,
+.navbar-icon .navbar__link::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+.navbar-icon--quickstart.navbar__link::before,
+.navbar-icon--quickstart .navbar__link::before {
+  mask-image: url("/img/icons/nav-quickstart.svg");
+  -webkit-mask-image: url("/img/icons/nav-quickstart.svg");
+}
+
+.navbar-icon--roadmap.navbar__link::before,
+.navbar-icon--roadmap .navbar__link::before {
+  mask-image: url("/img/icons/nav-roadmap.svg");
+  -webkit-mask-image: url("/img/icons/nav-roadmap.svg");
+}
+
+.navbar-icon--mcp.navbar__link::before,
+.navbar-icon--mcp .navbar__link::before {
+  mask-image: url("/img/icons/nav-mcp.svg");
+  -webkit-mask-image: url("/img/icons/nav-mcp.svg");
+}
+
+.navbar-icon--github.navbar__link::before,
+.navbar-icon--github .navbar__link::before {
+  mask-image: url("/img/icons/nav-github.svg");
+  -webkit-mask-image: url("/img/icons/nav-github.svg");
+}
+
+.navbar-cta--primary.navbar__link,
 .navbar-cta--primary .navbar__link {
-  border: 0;
-  color: #031622;
-  background: linear-gradient(90deg, #22d3ee, #67e8f9);
+  color: inherit;
+  background: transparent;
 }
 
+[data-theme="light"] .navbar-cta--primary.navbar__link,
 [data-theme="light"] .navbar-cta--primary .navbar__link {
-  color: #111827;
-  background: linear-gradient(90deg, #e5e7eb, #d1d5db);
+  color: inherit;
+  background: transparent;
 }
 
+[data-theme="dark"] .navbar-cta--primary.navbar__link,
 [data-theme="dark"] .navbar-cta--primary .navbar__link {
-  color: #f5f6f8;
-  background: linear-gradient(90deg, #3a3f47, #555c67);
+  color: inherit;
+  background: transparent;
+}
+
+@media (max-width: 996px) {
+  .navbar__inner .navbar__items--right > .navbar-icon--mcp {
+    display: inline-flex !important;
+  }
+
+  .navbar__inner .navbar__items--right > .navbar-icon--quickstart,
+  .navbar__inner .navbar__items--right > .navbar-icon--roadmap,
+  .navbar__inner .navbar__items--right > .navbar-icon--github {
+    display: none;
+  }
+
+  .navbar-sidebar {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .navbar-sidebar__items {
+    height: calc(100dvh - var(--ifm-navbar-height));
+    overflow-y: auto;
+  }
+
+  .navbar-sidebar__item.menu {
+    min-height: 100%;
+  }
+
+  .navbar-sidebar .menu__list {
+    display: block !important;
+  }
+
+  .navbar-sidebar .menu__list-item,
+  .navbar-sidebar .menu__link.navbar-cta,
+  .navbar-sidebar .menu__link.navbar-icon {
+    display: block !important;
+  }
+
+  .navbar-sidebar .menu__link.navbar-cta {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.42rem;
+    border-radius: 999px;
+    padding: 0.5rem 0.82rem;
+    margin: 0.2rem 0;
+    background: rgba(148, 163, 184, 0.12);
+  }
+
+  .navbar-sidebar .menu__link.navbar-icon::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    background-color: currentColor;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+
+  .navbar-sidebar .menu__link.navbar-icon--quickstart::before {
+    mask-image: url("/img/icons/nav-quickstart.svg");
+    -webkit-mask-image: url("/img/icons/nav-quickstart.svg");
+  }
+
+  .navbar-sidebar .menu__link.navbar-icon--roadmap::before {
+    mask-image: url("/img/icons/nav-roadmap.svg");
+    -webkit-mask-image: url("/img/icons/nav-roadmap.svg");
+  }
+
+  .navbar-sidebar .menu__link.navbar-icon--mcp::before {
+    mask-image: url("/img/icons/nav-mcp.svg");
+    -webkit-mask-image: url("/img/icons/nav-mcp.svg");
+  }
+
+  .navbar-sidebar .menu__link.navbar-icon--github::before {
+    mask-image: url("/img/icons/nav-github.svg");
+    -webkit-mask-image: url("/img/icons/nav-github.svg");
+  }
 }
