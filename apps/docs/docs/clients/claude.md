@@ -3,6 +3,8 @@ id: claude
 title: Using Rug Radar In Claude
 ---
 
+Claude users should use the hosted Rug Radar MCP unless they have a specific reason to self-host.
+
 ## What You Need
 
 - A configured Rug Radar MCP endpoint: `https://mcp.rugrdr.xyz`

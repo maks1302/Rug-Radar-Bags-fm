@@ -5,6 +5,8 @@ title: Using Rug Radar In OpenClaw
 
 This page explains how to use Rug Radar in OpenClaw-style agent setups that support remote MCP servers.
 
+This is the default usage path for most users.
+
 ## MCP Endpoint
 
 Use:

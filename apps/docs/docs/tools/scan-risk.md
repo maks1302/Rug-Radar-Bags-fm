@@ -5,11 +5,31 @@ title: scan_risk
 
 Fast red-flag mode with minimal noise.
 
-## Best For
+## When To Use It
 
 - Quick go/no-go checks
 - Volatile moments
 - Short summaries for chats
+- A fast second opinion after `analyze_token`
+
+## Inputs
+
+- `token_address` required
+
+## What It Does
+
+`scan_risk` runs `analyze_token` first, then applies a fixed set of threshold checks such as:
+
+- top 10 holders above 60%
+- LP unlocked
+- active mint authority
+- active freeze authority
+- suspicious volume/liquidity ratio
+- token age under 7 days
+- honeypot detected
+- largest holder above 15%
+- clustering or concentration flags
+- liquidity under $50k
 
 ## What You Receive
 
@@ -18,6 +38,11 @@ Fast red-flag mode with minimal noise.
 - Passed checks
 - Short verdict
 
-## Typical Prompt
+## Why It Exists
+
+This tool is intentionally narrower than `analyze_token`. It is optimized for fast decisions and short shareable outputs.
+
+## Typical Prompts
 
 `Scan red flags for <token>.`
+`Give me a short go/no-go scan for <token address>.`

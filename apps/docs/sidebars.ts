@@ -4,18 +4,28 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     "overview",
     "quickstart",
+    {
+      type: "category",
+      label: "Use Hosted MCP",
+      items: ["use-hosted-mcp", "clients/openclaw", "clients/claude", "clients/gemini", "clients/other-clients"],
+    },
+    {
+      type: "category",
+      label: "Core Concepts",
+      items: ["reading-reports", "scoring-model", "data-sources"],
+    },
     "roadmap",
     {
       type: "category",
-      label: "Guides",
+      label: "Usage Guides",
       items: [
-        "reading-reports",
         "trust-vs-wait",
         "risk-examples",
         "playbooks",
         "monitoring-workflow",
         "prompt-cookbook",
         "sharing-format",
+        "troubleshooting",
       ],
     },
     {
@@ -32,13 +42,21 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "MCP Clients",
-      items: ["clients/openclaw", "clients/claude", "clients/gemini", "clients/other-clients"],
+      label: "Self-Hosting",
+      items: ["installation", "local-development", "environment-variables", "deployment", "architecture"],
     },
     {
       type: "category",
       label: "Reference",
-      items: ["data-sources", "false-positives", "limitations", "glossary", "faq"],
+      items: [
+        "http-endpoints",
+        "database-schema",
+        "monitoring-internals",
+        "false-positives",
+        "limitations",
+        "glossary",
+        "faq",
+      ],
     },
   ],
 };

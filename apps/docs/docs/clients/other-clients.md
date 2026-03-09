@@ -3,7 +3,7 @@ id: other-clients
 title: Other MCP Clients
 ---
 
-Rug Radar is a standard MCP server. Any client with remote MCP support can integrate it.
+Rug Radar is a standard MCP server. Any client with remote MCP support can use the hosted endpoint directly.
 
 ## Connection Checklist
 

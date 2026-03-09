@@ -3,7 +3,7 @@ id: gemini
 title: Using Rug Radar In Gemini
 ---
 
-If your Gemini setup supports MCP-compatible tool connectors, use the same Rug Radar endpoint and prompts.
+If your Gemini setup supports MCP-compatible tool connectors, the default path is to connect the hosted Rug Radar endpoint and use it directly.
 
 ## Generic Steps
 
