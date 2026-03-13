@@ -3,7 +3,7 @@ id: overview
 title: What Rug Radar Does
 ---
 
-Rug Radar is a Solana-focused MCP server for fast token and wallet due diligence. Most users should use the already deployed remote MCP endpoint at `https://mcp.rugrdr.xyz` inside Claude or any MCP-compatible client. Self-hosting is supported, but it is the advanced path, not the default path.
+Rug Radar is a Solana-focused MCP server for fast token and wallet due diligence. Most users should use the already deployed remote MCP endpoint at `https://mcp.rugrdr.xyz/mcp` inside Claude or any MCP-compatible client. Self-hosting is supported, but it is the advanced path, not the default path.
 
 It is designed to answer a narrow but high-value set of questions quickly:
 - Is this token risky?
@@ -23,7 +23,7 @@ It is designed to answer a narrow but high-value set of questions quickly:
 
 For most users, the workflow is:
 
-1. connect your MCP client to `https://mcp.rugrdr.xyz`
+1. connect your MCP client to `https://mcp.rugrdr.xyz/mcp`
 2. let the client discover the Rug Radar tools
 3. use plain-language prompts like `Analyze BONK` or `Compare BONK vs WIF`
 

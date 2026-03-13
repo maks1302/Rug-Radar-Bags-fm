@@ -7,7 +7,7 @@ Claude users should use the hosted Rug Radar MCP unless they have a specific rea
 
 ## What You Need
 
-- A configured Rug Radar MCP endpoint: `https://mcp.rugrdr.xyz`
+- A configured Rug Radar MCP endpoint: `https://mcp.rugrdr.xyz/mcp`
 - Prompts in plain language (Claude maps intent to tools)
 
 ## Typical Flow

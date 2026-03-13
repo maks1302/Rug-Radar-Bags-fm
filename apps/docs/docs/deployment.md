@@ -3,7 +3,7 @@ id: deployment
 title: Deployment
 ---
 
-This page is for self-hosting. If your goal is only to use Rug Radar, prefer the hosted MCP endpoint at `https://mcp.rugrdr.xyz`.
+This page is for self-hosting. If your goal is only to use Rug Radar, prefer the hosted MCP endpoint at `https://mcp.rugrdr.xyz/mcp`.
 
 The repository is split into two deployable surfaces:
 

@@ -9,7 +9,7 @@ This page is for users of the already deployed Rug Radar MCP. If you only want t
 
 Use this MCP endpoint in your client:
 
-`https://mcp.rugrdr.xyz`
+`https://mcp.rugrdr.xyz/mcp`
 
 If your client asks for transport, use Streamable HTTP when applicable.
 

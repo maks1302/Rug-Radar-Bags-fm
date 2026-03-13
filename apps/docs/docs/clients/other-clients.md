@@ -7,7 +7,7 @@ Rug Radar is a standard MCP server. Any client with remote MCP support can use t
 
 ## Connection Checklist
 
-- MCP endpoint URL configured correctly (`https://mcp.rugrdr.xyz`)
+- MCP endpoint URL configured correctly (`https://mcp.rugrdr.xyz/mcp`)
 - Transport set to Streamable HTTP
 - Required headers/auth configured if your deployment uses auth
 - Tool list visible after connection

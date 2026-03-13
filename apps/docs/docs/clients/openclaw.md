@@ -11,13 +11,13 @@ This is the default usage path for most users.
 
 Use:
 
-`https://mcp.rugrdr.xyz`
+`https://mcp.rugrdr.xyz/mcp`
 
 ## Typical Integration Steps
 
 1. Open your OpenClaw agent/tool settings.
 2. Add a remote MCP server.
-3. Set endpoint URL to `https://mcp.rugrdr.xyz`.
+3. Set endpoint URL to `https://mcp.rugrdr.xyz/mcp`.
 4. Select Streamable HTTP transport if required by your UI.
 5. Save and refresh available tools.
 

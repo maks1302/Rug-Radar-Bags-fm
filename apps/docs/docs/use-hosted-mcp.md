@@ -7,7 +7,7 @@ This is the main way to use Rug Radar.
 
 If your goal is to analyze tokens and wallets, you do not need to clone the repository, install dependencies, or run a server yourself. Just connect your MCP client to the already deployed endpoint:
 
-`https://mcp.rugrdr.xyz`
+`https://mcp.rugrdr.xyz/mcp`
 
 ## Who This Path Is For
 
@@ -19,7 +19,7 @@ If your goal is to analyze tokens and wallets, you do not need to clone the repo
 ## What You Need
 
 - an MCP-compatible client
-- the Rug Radar endpoint: `https://mcp.rugrdr.xyz`
+- the Rug Radar endpoint: `https://mcp.rugrdr.xyz/mcp`
 
 That is it.
 

@@ -7,7 +7,7 @@ Rug Radar is a production-ready MCP server that turns fragmented onchain data in
 ## Live Deployment
 
 - Landing + docs: **https://rugrdr.xyz**
-- MCP endpoint (primary): **https://mcp.rugrdr.xyz**
+- MCP endpoint (canonical): **https://mcp.rugrdr.xyz/mcp**
 - Health check: **https://mcp.rugrdr.xyz/health**
 - API info: **https://mcp.rugrdr.xyz/info**
 

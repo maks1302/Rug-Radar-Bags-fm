@@ -3,7 +3,7 @@ id: installation
 title: Self-Hosting Installation
 ---
 
-This page covers the self-hosting path. Most users do not need this page, because they can use the already deployed MCP endpoint directly at `https://mcp.rugrdr.xyz`.
+This page covers the self-hosting path. Most users do not need this page, because they can use the already deployed MCP endpoint directly at `https://mcp.rugrdr.xyz/mcp`.
 
 Use this page only if you want to run your own copy of the server.
 

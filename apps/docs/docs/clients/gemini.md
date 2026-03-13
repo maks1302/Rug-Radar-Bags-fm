@@ -7,7 +7,7 @@ If your Gemini setup supports MCP-compatible tool connectors, the default path i
 
 ## Generic Steps
 
-1. Add remote MCP server URL: `https://mcp.rugrdr.xyz`
+1. Add remote MCP server URL: `https://mcp.rugrdr.xyz/mcp`
 2. Confirm available Rug Radar tools are detected.
 3. Run prompt flow:
    - `Analyze <token>`
