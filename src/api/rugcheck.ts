@@ -1,4 +1,4 @@
-import { getJsonWithCache } from "../utils/http.js";
+import { getJsonWithCacheMeta } from "../utils/http.js";
 
 interface RugCheckDynamic {
   score?: number;
@@ -34,6 +34,11 @@ export interface RugCheckSnapshot {
   rugScore: number | null;
   lpUnlocked: boolean | null;
   warnings: string[];
+  sourceMeta: {
+    fetchedAt: string;
+    ageMs: number;
+    cacheStatus: "hit" | "miss";
+  };
 }
 
 function truthyString(value: unknown): boolean {
@@ -42,7 +47,8 @@ function truthyString(value: unknown): boolean {
 
 export async function fetchRugCheck(address: string): Promise<RugCheckSnapshot | null> {
   const url = `https://api.rugcheck.xyz/v1/tokens/${address}/report`;
-  const data = await getJsonWithCache<RugCheckDynamic>(`rugcheck:${address}`, url);
+  const result = await getJsonWithCacheMeta<RugCheckDynamic>(`rugcheck:${address}`, url);
+  const data = result.data;
 
   const mintAuthorityRaw = data.token?.mintAuthority ?? data.mintAuthority;
   const freezeAuthorityRaw = data.token?.freezeAuthority ?? data.freezeAuthority;
@@ -58,5 +64,10 @@ export async function fetchRugCheck(address: string): Promise<RugCheckSnapshot |
     rugScore: typeof data.score === "number" ? data.score : null,
     lpUnlocked: data.markets?.lpUnlocked ?? (typeof data.markets?.lpBurned === "boolean" ? !data.markets.lpBurned : null),
     warnings,
+    sourceMeta: {
+      fetchedAt: result.fetchedAt,
+      ageMs: result.ageMs,
+      cacheStatus: result.cacheStatus,
+    },
   };
 }

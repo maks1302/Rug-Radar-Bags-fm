@@ -1,4 +1,4 @@
-import { getJsonWithCache, sanitizeAxiosError } from "../utils/http.js";
+import { getJsonWithCacheMeta, sanitizeAxiosError } from "../utils/http.js";
 
 const BAGS_BASE_URL = "https://public-api-v2.bags.fm/api/v1";
 
@@ -52,6 +52,11 @@ export interface BagsSnapshot {
   recentClaims24h: number | null;
   hasBagsPool: boolean | null;
   notes: string;
+  sourceMeta?: {
+    fetchedAt: string;
+    ageMs: number;
+    cacheStatus: "hit" | "miss";
+  };
 }
 
 function toLamports(value: string | undefined): number {
@@ -86,11 +91,11 @@ export async function fetchBagsData(tokenAddress: string): Promise<BagsSnapshot>
   const poolUrl = `${BAGS_BASE_URL}/solana/bags/pools/token-mint?tokenMint=${encodeURIComponent(tokenAddress)}`;
 
   const [creatorsRes, feesRes, claimStatsRes, claimEventsRes, poolRes] = await Promise.allSettled([
-    getJsonWithCache<BagsEnvelope<BagsCreator[]>>(`bags:creators:${tokenAddress}`, creatorsUrl, 60_000, headers),
-    getJsonWithCache<BagsEnvelope<string>>(`bags:lifetimefees:${tokenAddress}`, lifetimeFeesUrl, 60_000, headers),
-    getJsonWithCache<BagsEnvelope<BagsClaimStat[]>>(`bags:claimstats:${tokenAddress}`, claimStatsUrl, 60_000, headers),
-    getJsonWithCache<BagsEnvelope<BagsClaimEventsResponse>>(`bags:claimevents:${tokenAddress}`, claimEventsUrl, 20_000, headers),
-    getJsonWithCache<BagsEnvelope<BagsPoolResponse>>(`bags:pool:${tokenAddress}`, poolUrl, 60_000, headers),
+    getJsonWithCacheMeta<BagsEnvelope<BagsCreator[]>>(`bags:creators:${tokenAddress}`, creatorsUrl, 60_000, headers),
+    getJsonWithCacheMeta<BagsEnvelope<string>>(`bags:lifetimefees:${tokenAddress}`, lifetimeFeesUrl, 60_000, headers),
+    getJsonWithCacheMeta<BagsEnvelope<BagsClaimStat[]>>(`bags:claimstats:${tokenAddress}`, claimStatsUrl, 60_000, headers),
+    getJsonWithCacheMeta<BagsEnvelope<BagsClaimEventsResponse>>(`bags:claimevents:${tokenAddress}`, claimEventsUrl, 20_000, headers),
+    getJsonWithCacheMeta<BagsEnvelope<BagsPoolResponse>>(`bags:pool:${tokenAddress}`, poolUrl, 60_000, headers),
   ]);
 
   const errors: string[] = [];
@@ -107,12 +112,12 @@ export async function fetchBagsData(tokenAddress: string): Promise<BagsSnapshot>
   const claimEventsData = pull(claimEventsRes, "claim-events");
   const poolData = pull(poolRes, "pool");
 
-  const creators = creatorsData?.response ?? [];
+  const creators = creatorsData?.data.response ?? [];
   const creator = creators.find((c) => c.isCreator) ?? creators[0];
 
-  const lifetimeFeesLamports = feesData?.response ? toLamports(feesData.response) : null;
+  const lifetimeFeesLamports = feesData?.data.response ? toLamports(feesData.data.response) : null;
 
-  const claimStats = claimStatsData?.response ?? [];
+  const claimStats = claimStatsData?.data.response ?? [];
   const uniqueClaimers = claimStats.length || null;
   const totalClaimedLamports = claimStats.reduce((acc, c) => acc + toLamports(c.totalClaimed), 0);
   const creatorClaimedLamports = claimStats
@@ -121,7 +126,7 @@ export async function fetchBagsData(tokenAddress: string): Promise<BagsSnapshot>
   const creatorClaimSharePct =
     totalClaimedLamports > 0 ? Number(((creatorClaimedLamports / totalClaimedLamports) * 100).toFixed(2)) : null;
 
-  const claimEvents = claimEventsData?.response?.events ?? [];
+  const claimEvents = claimEventsData?.data.response?.events ?? [];
   const nowMs = Date.now();
   const oneDayMs = 24 * 60 * 60 * 1000;
   const twoDayMs = 2 * oneDayMs;
@@ -141,7 +146,10 @@ export async function fetchBagsData(tokenAddress: string): Promise<BagsSnapshot>
     else feeTrend = "flat";
   }
 
-  const hasBagsPool = Boolean(poolData?.response?.dbcPoolKey || poolData?.response?.dammV2PoolKey);
+  const hasBagsPool = Boolean(poolData?.data.response?.dbcPoolKey || poolData?.data.response?.dammV2PoolKey);
+  const freshnessCandidate = [creatorsData, feesData, claimStatsData, claimEventsData, poolData]
+    .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
+    .sort((a, b) => a.ageMs - b.ageMs)[0];
 
   // Community score combines adoption (claimers/events), monetization (fees), and creator concentration.
   const feeScore =
@@ -176,5 +184,12 @@ export async function fetchBagsData(tokenAddress: string): Promise<BagsSnapshot>
     recentClaims24h,
     hasBagsPool: errors.length === 5 ? null : hasBagsPool,
     notes: errors.length > 0 ? `Partial data: ${errors.join("; ")}` : "Bags data loaded",
+    sourceMeta: freshnessCandidate
+      ? {
+          fetchedAt: freshnessCandidate.fetchedAt,
+          ageMs: freshnessCandidate.ageMs,
+          cacheStatus: freshnessCandidate.cacheStatus,
+        }
+      : undefined,
   };
 }

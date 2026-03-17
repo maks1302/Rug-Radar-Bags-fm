@@ -43,8 +43,15 @@ You should care most when several red flags point to the same failure mode, for 
 ## 4. Source Notes
 
 - every result includes source availability metadata
+- every source can also include freshness metadata
 - unavailable sources are listed explicitly
 - if key sources are missing, interpret the score conservatively
+
+Freshness labels are a practical read on how old the source payload is inside Rug Radar:
+
+- `live`: very recent
+- `recent`: still usable, but not immediate
+- `stale`: old enough that a re-run is worth considering before acting
 
 ## 5. Token Age
 

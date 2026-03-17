@@ -13,6 +13,22 @@ interface AnalyzeTokenInput {
   token_name?: string;
 }
 
+function toFreshness(
+  sourceMeta?: { fetchedAt: string; ageMs: number; cacheStatus: "hit" | "miss" },
+): DataSourceStatus["freshness"] | undefined {
+  if (!sourceMeta) return undefined;
+
+  const ageSeconds = Math.max(0, Math.round(sourceMeta.ageMs / 1000));
+  const label = ageSeconds <= 30 ? "live" : ageSeconds <= 300 ? "recent" : "stale";
+
+  return {
+    fetchedAt: sourceMeta.fetchedAt,
+    ageSeconds,
+    label,
+    cacheStatus: sourceMeta.cacheStatus,
+  };
+}
+
 export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTokenResult> {
   const validation = requireOneOf({ token_address: input.token_address, token_name: input.token_name });
   if (validation) {
@@ -38,7 +54,7 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
       const snap = tokenAddressRaw
         ? await fetchDexByTokenAddress(tokenAddressRaw)
         : await fetchDexByTokenName(tokenNameRaw!);
-      sources.push({ source: "dexscreener", status: "ok" });
+      sources.push({ source: "dexscreener", status: "ok", freshness: toFreshness(snap?.sourceMeta) });
       return snap;
     } catch (error) {
       dexErr = sanitizeAxiosError(error);
@@ -55,7 +71,7 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
     if (!isLikelySolanaAddress(resolvedAddress)) return null;
     try {
       const snap = await fetchRugCheck(resolvedAddress);
-      sources.push({ source: "rugcheck", status: "ok" });
+      sources.push({ source: "rugcheck", status: "ok", freshness: toFreshness(snap?.sourceMeta) });
       return snap;
     } catch (error) {
       rugErr = sanitizeAxiosError(error);
@@ -69,7 +85,7 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
     if (!isLikelySolanaAddress(resolvedAddress)) return null;
     try {
       const snap = await fetchTopHolders(resolvedAddress);
-      sources.push({ source: "helius", status: "ok" });
+      sources.push({ source: "helius", status: "ok", freshness: toFreshness(snap?.sourceMeta) });
       return snap;
     } catch (error) {
       holdersErr = sanitizeAxiosError(error);
@@ -83,9 +99,9 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
     try {
       const snap = await fetchBagsData(resolvedAddress);
       if (snap.status === "unavailable") {
-        sources.push({ source: "bags", status: "unavailable", note: snap.notes });
+        sources.push({ source: "bags", status: "unavailable", note: snap.notes, freshness: toFreshness(snap.sourceMeta) });
       } else {
-        sources.push({ source: "bags", status: "ok", note: snap.notes });
+        sources.push({ source: "bags", status: "ok", note: snap.notes, freshness: toFreshness(snap.sourceMeta) });
       }
       return snap;
     } catch (error) {

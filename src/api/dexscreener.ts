@@ -1,4 +1,4 @@
-import { getJsonWithCache } from "../utils/http.js";
+import { getJsonWithCacheMeta } from "../utils/http.js";
 
 interface DexPair {
   chainId?: string;
@@ -41,11 +41,17 @@ export interface DexTokenSnapshot {
   liquidity: number | null;
   volume24h: number | null;
   priceChange24h: number | null;
+  sourceMeta: {
+    fetchedAt: string;
+    ageMs: number;
+    cacheStatus: "hit" | "miss";
+  };
 }
 
 export async function fetchDexByTokenAddress(address: string): Promise<DexTokenSnapshot | null> {
   const url = `https://api.dexscreener.com/latest/dex/tokens/${address}`;
-  const data = await getJsonWithCache<DexResponse>(`dex:token:${address}`, url);
+  const result = await getJsonWithCacheMeta<DexResponse>(`dex:token:${address}`, url);
+  const data = result.data;
   const pair = pickBestPair(data.pairs ?? []);
   if (!pair) return null;
 
@@ -62,13 +68,19 @@ export async function fetchDexByTokenAddress(address: string): Promise<DexTokenS
     liquidity: pair.liquidity?.usd ?? null,
     volume24h: pair.volume?.h24 ?? null,
     priceChange24h: pair.priceChange?.h24 ?? null,
+    sourceMeta: {
+      fetchedAt: result.fetchedAt,
+      ageMs: result.ageMs,
+      cacheStatus: result.cacheStatus,
+    },
   };
 }
 
 export async function fetchDexByTokenName(tokenName: string): Promise<DexTokenSnapshot | null> {
   const encoded = encodeURIComponent(tokenName);
   const url = `https://api.dexscreener.com/latest/dex/search?q=${encoded}`;
-  const data = await getJsonWithCache<DexResponse>(`dex:search:${tokenName.toLowerCase()}`, url);
+  const result = await getJsonWithCacheMeta<DexResponse>(`dex:search:${tokenName.toLowerCase()}`, url);
+  const data = result.data;
   const solanaPairs = (data.pairs ?? []).filter((p) => p.chainId === "solana");
   const pair = pickBestPair(solanaPairs);
   if (!pair) return null;
@@ -86,5 +98,10 @@ export async function fetchDexByTokenName(tokenName: string): Promise<DexTokenSn
     liquidity: pair.liquidity?.usd ?? null,
     volume24h: pair.volume?.h24 ?? null,
     priceChange24h: pair.priceChange?.h24 ?? null,
+    sourceMeta: {
+      fetchedAt: result.fetchedAt,
+      ageMs: result.ageMs,
+      cacheStatus: result.cacheStatus,
+    },
   };
 }
