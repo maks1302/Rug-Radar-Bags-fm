@@ -64,6 +64,7 @@ function createMcpServer(): McpServer {
       inputSchema: {
         token_address: z.string(),
         user_id: z.string().optional(),
+        preset: z.enum(["balanced", "liquidity_guard", "concentration_guard", "contract_guard"]).optional(),
         liquidity_drop_percent: z.number().optional(),
         risk_score_increase: z.number().optional(),
         holder_concentration_increase: z.number().optional(),

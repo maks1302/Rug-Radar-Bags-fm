@@ -8,6 +8,8 @@ export interface WatchThresholds {
   alertOnHoneypot: boolean;
 }
 
+export type WatchPreset = "balanced" | "liquidity_guard" | "concentration_guard" | "contract_guard";
+
 export interface WatchlistRecord {
   id: number;
   userId: string;
@@ -56,6 +58,31 @@ const DEFAULT_THRESHOLDS: WatchThresholds = {
   alertOnHoneypot: true,
 };
 
+const PRESET_THRESHOLDS: Record<WatchPreset, WatchThresholds> = {
+  balanced: DEFAULT_THRESHOLDS,
+  liquidity_guard: {
+    liquidityDropPercent: 12,
+    riskScoreIncrease: 8,
+    holderConcentrationIncrease: 6,
+    alertOnAuthorityChange: true,
+    alertOnHoneypot: true,
+  },
+  concentration_guard: {
+    liquidityDropPercent: 20,
+    riskScoreIncrease: 8,
+    holderConcentrationIncrease: 3,
+    alertOnAuthorityChange: true,
+    alertOnHoneypot: true,
+  },
+  contract_guard: {
+    liquidityDropPercent: 25,
+    riskScoreIncrease: 12,
+    holderConcentrationIncrease: 8,
+    alertOnAuthorityChange: true,
+    alertOnHoneypot: true,
+  },
+};
+
 export function normalizeThresholds(input?: Partial<WatchThresholds>): WatchThresholds {
   return {
     liquidityDropPercent: input?.liquidityDropPercent ?? DEFAULT_THRESHOLDS.liquidityDropPercent,
@@ -65,6 +92,11 @@ export function normalizeThresholds(input?: Partial<WatchThresholds>): WatchThre
     alertOnAuthorityChange: input?.alertOnAuthorityChange ?? DEFAULT_THRESHOLDS.alertOnAuthorityChange,
     alertOnHoneypot: input?.alertOnHoneypot ?? DEFAULT_THRESHOLDS.alertOnHoneypot,
   };
+}
+
+export function getPresetThresholds(preset?: WatchPreset): WatchThresholds {
+  if (!preset) return DEFAULT_THRESHOLDS;
+  return PRESET_THRESHOLDS[preset];
 }
 
 function mapWatchlistRow(row: WatchlistRow): WatchlistRecord {
