@@ -23,11 +23,26 @@ interface ChangeItem {
   direction: "up" | "down" | "flat" | "changed";
 }
 
+type AlertEventType =
+  | "risk_score_increase"
+  | "liquidity_drop"
+  | "holder_concentration_increase"
+  | "authority_change"
+  | "honeypot_detected";
+
+type AlertSeverity = "Low" | "Medium" | "High" | "Extreme";
+
 interface TriggeredAlert {
   watchlistId: number;
   userId: string;
   trigger: string;
   detail: string;
+  eventType: AlertEventType;
+  severity: AlertSeverity;
+  category: "risk" | "liquidity" | "holders" | "contract";
+  summary: string;
+  detectedAt: string;
+  tokenAddress: string;
 }
 
 interface AnalyzeTokenLike {
@@ -50,6 +65,75 @@ function numberDelta(previous: number | null, current: number | null): number | 
 function pctDrop(previous: number | null, current: number | null): number | null {
   if (previous === null || current === null || previous === 0) return null;
   return Number((((previous - current) / previous) * 100).toFixed(2));
+}
+
+function severityFromThreshold(value: number | null, bands: { medium: number; high: number; extreme: number }): AlertSeverity {
+  if (value === null) return "Low";
+  if (value >= bands.extreme) return "Extreme";
+  if (value >= bands.high) return "High";
+  if (value >= bands.medium) return "Medium";
+  return "Low";
+}
+
+function buildAlertPayload(input: {
+  trigger: AlertEventType;
+  detail: string;
+  tokenAddress: string;
+  detectedAt: string;
+  riskRise?: number | null;
+  liqDropPct?: number | null;
+  top10Rise?: number | null;
+  currentContract?: AnalyzeTokenLike["contract"];
+}): Omit<TriggeredAlert, "watchlistId" | "userId" | "trigger" | "detail"> {
+  switch (input.trigger) {
+    case "risk_score_increase":
+      return {
+        eventType: input.trigger,
+        severity: severityFromThreshold(input.riskRise ?? null, { medium: 8, high: 15, extreme: 25 }),
+        category: "risk",
+        summary: `Risk score increased by ${input.riskRise?.toFixed(2) ?? "n/a"} points`,
+        detectedAt: input.detectedAt,
+        tokenAddress: input.tokenAddress,
+      };
+    case "liquidity_drop":
+      return {
+        eventType: input.trigger,
+        severity: severityFromThreshold(input.liqDropPct ?? null, { medium: 20, high: 40, extreme: 70 }),
+        category: "liquidity",
+        summary: `Liquidity dropped by ${input.liqDropPct?.toFixed(2) ?? "n/a"}%`,
+        detectedAt: input.detectedAt,
+        tokenAddress: input.tokenAddress,
+      };
+    case "holder_concentration_increase":
+      return {
+        eventType: input.trigger,
+        severity: severityFromThreshold(input.top10Rise ?? null, { medium: 4, high: 8, extreme: 15 }),
+        category: "holders",
+        summary: `Top 10 holder concentration increased by ${input.top10Rise?.toFixed(2) ?? "n/a"}%`,
+        detectedAt: input.detectedAt,
+        tokenAddress: input.tokenAddress,
+      };
+    case "authority_change":
+      return {
+        eventType: input.trigger,
+        severity: "High",
+        category: "contract",
+        summary:
+          `Authority state changed; mintAuthority=${String(input.currentContract?.mintAuthority ?? null)}, ` +
+          `freezeAuthority=${String(input.currentContract?.freezeAuthority ?? null)}`,
+        detectedAt: input.detectedAt,
+        tokenAddress: input.tokenAddress,
+      };
+    case "honeypot_detected":
+      return {
+        eventType: input.trigger,
+        severity: "Extreme",
+        category: "contract",
+        summary: "Token is now flagged as a honeypot",
+        detectedAt: input.detectedAt,
+        tokenAddress: input.tokenAddress,
+      };
+  }
 }
 
 function extractChangeSet(previous: AnalyzeTokenLike | null, current: AnalyzeTokenLike): ChangeItem[] {
@@ -127,6 +211,7 @@ async function evaluateAlerts(
   previous: AnalyzeTokenLike | null,
   current: AnalyzeTokenLike,
   tokenAddress: string,
+  detectedAt: string,
 ): Promise<TriggeredAlert[]> {
   if (!previous) return [];
 
@@ -145,7 +230,7 @@ async function evaluateAlerts(
     const liqDropPct = pctDrop(prevLiq, currLiq);
     const top10Rise = prevTop10 !== null && currTop10 !== null ? currTop10 - prevTop10 : null;
 
-    const conditions: Array<{ trigger: string; hit: boolean; detail: string }> = [
+    const conditions: Array<{ trigger: AlertEventType; hit: boolean; detail: string }> = [
       {
         trigger: "risk_score_increase",
         hit: riskRise !== null && riskRise >= t.riskScoreIncrease,
@@ -201,6 +286,16 @@ async function evaluateAlerts(
         userId: watch.userId,
         trigger: c.trigger,
         detail: c.detail,
+        ...buildAlertPayload({
+          trigger: c.trigger,
+          detail: c.detail,
+          tokenAddress,
+          detectedAt,
+          riskRise,
+          liqDropPct,
+          top10Rise,
+          currentContract: current.contract,
+        }),
       });
     }
   }
@@ -236,7 +331,7 @@ export async function getTokenChanges(input: GetTokenChangesInput) {
 
   const [changes, alerts] = await Promise.all([
     Promise.resolve(extractChangeSet(previous, current as unknown as AnalyzeTokenLike)),
-    evaluateAlerts(watchlists, previous, current as unknown as AnalyzeTokenLike, tokenAddress),
+    evaluateAlerts(watchlists, previous, current as unknown as AnalyzeTokenLike, tokenAddress, current.meta.fetchedAt),
   ]);
 
   await insertToolEvent({
