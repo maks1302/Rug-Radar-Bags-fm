@@ -1,10 +1,19 @@
 import { analyzeToken } from "./analyzeToken.js";
-import { insertSnapshot, insertToolEvent, normalizeThresholds, upsertWatchlist, type WatchThresholds } from "../db/repository.js";
+import {
+  getPresetThresholds,
+  insertSnapshot,
+  insertToolEvent,
+  normalizeThresholds,
+  upsertWatchlist,
+  type WatchPreset,
+  type WatchThresholds,
+} from "../db/repository.js";
 import { isLikelySolanaAddress, normalizeInput } from "../utils/validators.js";
 
 interface WatchTokenInput {
   token_address: string;
   user_id?: string;
+  preset?: WatchPreset;
   liquidity_drop_percent?: number;
   risk_score_increase?: number;
   holder_concentration_increase?: number;
@@ -18,6 +27,7 @@ export interface WatchTokenResult {
     userId: string;
     tokenAddress: string;
     active: boolean;
+    presetApplied: WatchPreset;
     thresholds: WatchThresholds;
   };
   baselineSnapshot: {
@@ -36,7 +46,9 @@ export async function watchToken(input: WatchTokenInput): Promise<WatchTokenResu
   }
 
   const userId = normalizeInput(input.user_id ?? "anonymous");
+  const presetApplied: WatchPreset = input.preset ?? "balanced";
   const thresholds = normalizeThresholds({
+    ...getPresetThresholds(input.preset),
     liquidityDropPercent: input.liquidity_drop_percent,
     riskScoreIncrease: input.risk_score_increase,
     holderConcentrationIncrease: input.holder_concentration_increase,
@@ -71,6 +83,7 @@ export async function watchToken(input: WatchTokenInput): Promise<WatchTokenResu
       userId: watch.userId,
       tokenAddress: watch.tokenAddress,
       active: watch.active,
+      presetApplied,
       thresholds,
     },
     baselineSnapshot: {
@@ -79,6 +92,6 @@ export async function watchToken(input: WatchTokenInput): Promise<WatchTokenResu
       top10Percent: analysis.holders.top10Percent,
       fetchedAt: analysis.meta.fetchedAt,
     },
-    note: "Watchlist saved. Use get_token_changes to evaluate deltas and trigger alerts.",
+    note: "Watchlist saved. Use get_token_changes to evaluate deltas and trigger alerts. Manual thresholds override the preset when provided.",
   };
 }
