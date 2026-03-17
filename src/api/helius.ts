@@ -1,4 +1,4 @@
-import { getJsonWithCache } from "../utils/http.js";
+import { getJsonWithCacheMeta } from "../utils/http.js";
 
 const HELIUS_BASE = "https://api.helius.xyz/v0";
 
@@ -30,6 +30,11 @@ export interface HeliusHolderSnapshot {
   largestHolder: number | null;
   devWalletPercent: number | null;
   suspiciousClusterScore: number | null;
+  sourceMeta: {
+    fetchedAt: string;
+    ageMs: number;
+    cacheStatus: "hit" | "miss";
+  };
 }
 
 export interface WalletBehaviorSnapshot {
@@ -72,7 +77,8 @@ function parseNumber(value: unknown): number {
 export async function fetchTopHolders(tokenAddress: string): Promise<HeliusHolderSnapshot> {
   const apiKey = requireHeliusApiKey();
   const url = `${HELIUS_BASE}/token-holdings?api-key=${apiKey}&mint=${tokenAddress}`;
-  const data = await getJsonWithCache<HeliusHolder[]>(`helius:holders:${tokenAddress}`, url, 30_000);
+  const result = await getJsonWithCacheMeta<HeliusHolder[]>(`helius:holders:${tokenAddress}`, url, 30_000);
+  const data = result.data;
 
   const normalized = (data ?? []).map((h) => ({
     wallet: h.owner ?? "unknown",
@@ -108,13 +114,19 @@ export async function fetchTopHolders(tokenAddress: string): Promise<HeliusHolde
     largestHolder,
     devWalletPercent,
     suspiciousClusterScore,
+    sourceMeta: {
+      fetchedAt: result.fetchedAt,
+      ageMs: result.ageMs,
+      cacheStatus: result.cacheStatus,
+    },
   };
 }
 
 export async function fetchWalletTransactions(walletAddress: string): Promise<WalletBehaviorSnapshot> {
   const apiKey = requireHeliusApiKey();
   const url = `${HELIUS_BASE}/addresses/${walletAddress}/transactions?api-key=${apiKey}&limit=100`;
-  const data = await getJsonWithCache<HeliusTx[]>(`helius:wallettx:${walletAddress}`, url, 20_000);
+  const result = await getJsonWithCacheMeta<HeliusTx[]>(`helius:wallettx:${walletAddress}`, url, 20_000);
+  const data = result.data;
 
   const txs = data ?? [];
   const trades = txs.slice(0, 100).map((tx) => {

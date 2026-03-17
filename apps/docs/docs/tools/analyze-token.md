@@ -28,7 +28,7 @@ At least one must be provided.
 - Helius for holder concentration
 - Bags for ecosystem participation context
 
-It then computes a deterministic risk score and returns structured metadata about source availability.
+It then computes a deterministic risk score and returns structured metadata about source availability and freshness.
 
 ## What You Receive
 
@@ -38,6 +38,7 @@ It then computes a deterministic risk score and returns structured metadata abou
 - holder concentration metrics
 - risk score, label, confidence, bullish signals, and red flags
 - metadata about which sources were available or unavailable
+- per-source freshness metadata including fetch time, cache status, and a `live` / `recent` / `stale` label
 
 ## Risk Model Notes
 

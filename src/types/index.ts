@@ -5,6 +5,12 @@ export interface DataSourceStatus {
   source: "dexscreener" | "rugcheck" | "helius" | "bags";
   status: "ok" | "unavailable";
   note?: string;
+  freshness?: {
+    fetchedAt: string;
+    ageSeconds: number;
+    label: "live" | "recent" | "stale";
+    cacheStatus: "hit" | "miss";
+  };
 }
 
 export interface TokenIdentity {
