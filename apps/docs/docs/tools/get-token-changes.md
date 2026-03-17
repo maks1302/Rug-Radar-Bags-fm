@@ -32,6 +32,7 @@ Checks what changed since the last snapshot.
 - Previous vs current metrics
 - Delta list (risk/liquidity/holders/contract changes)
 - Triggered alerts that match your watch rules
+- Stable alert payload fields for integrations: `eventType`, `severity`, `category`, `summary`, `detectedAt`, and `tokenAddress`
 - A note indicating whether this was the first stored snapshot or a real delta run
 
 ## Metrics Compared
@@ -50,6 +51,17 @@ Checks what changed since the last snapshot.
 - `holder_concentration_increase`
 - `authority_change`
 - `honeypot_detected`
+
+## Alert Payload Notes
+
+Each triggered alert keeps the existing human-readable `trigger` and `detail` fields, and now also includes a stable integration shape:
+
+- `eventType`: stable machine-readable alert type
+- `severity`: `Low`, `Medium`, `High`, or `Extreme`
+- `category`: `risk`, `liquidity`, `holders`, or `contract`
+- `summary`: short notification-ready message
+- `detectedAt`: ISO timestamp for the current run
+- `tokenAddress`: mint address tied to the alert
 
 ## Storage Requirements
 
