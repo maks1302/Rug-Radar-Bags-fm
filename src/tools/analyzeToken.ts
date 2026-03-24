@@ -181,17 +181,24 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
     availableSources,
     totalSources: 4,
   });
+  const addRiskFlag = (flag: string, impact: string) => {
+    risk.redFlags.push(flag);
+    risk.redFlagDetails.push({ flag, impact });
+  };
 
   if (bags && bags.communityScore !== null && bags.communityScore >= 70) {
     risk.bullishSignals.push("Strong bags ecosystem community score");
     risk.score = Math.max(0, risk.score - 3);
   }
   if (bags && bags.hasBagsPool === false) {
-    risk.redFlags.push("No Bags pool found for token mint");
+    addRiskFlag("No Bags pool found for token mint", "There is less visible ecosystem participation context around this token.");
     risk.score = Math.min(100, risk.score + 3);
   }
   if (bags && bags.creatorClaimSharePct !== null && bags.creatorClaimSharePct > 70) {
-    risk.redFlags.push(`Creator claim share is high (${bags.creatorClaimSharePct.toFixed(1)}%)`);
+    addRiskFlag(
+      `Creator claim share is high (${bags.creatorClaimSharePct.toFixed(1)}%)`,
+      "Creator-aligned wallets may still control too much of the fee-share upside.",
+    );
     risk.score = Math.min(100, risk.score + 4);
   }
   if (bags && bags.uniqueClaimers !== null && bags.uniqueClaimers > 30) {
@@ -276,6 +283,12 @@ export function analyzeTokenErrorFallback(input: AnalyzeTokenInput, errorMessage
       confidence: 0,
       bullishSignals: [],
       redFlags: [errorMessage],
+      redFlagDetails: [
+        {
+          flag: errorMessage,
+          impact: "The report could not be assembled, so the safest assumption is that visibility is incomplete.",
+        },
+      ],
     },
     meta: {
       fetchedAt: nowIso(),

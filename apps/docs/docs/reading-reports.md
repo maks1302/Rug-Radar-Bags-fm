@@ -31,6 +31,7 @@ Confidence reflects data completeness for that run.
 ## 3. Red Flags vs Bullish Signals
 
 - red flags describe what can go wrong
+- `redFlagDetails` adds a short explanation of why each flag matters
 - bullish signals describe what currently looks healthier
 - neither section is a price prediction
 

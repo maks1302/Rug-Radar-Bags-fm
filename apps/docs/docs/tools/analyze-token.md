@@ -37,6 +37,7 @@ It then computes a deterministic risk score and returns structured metadata abou
 - contract safety fields including honeypot, authorities, LP status, and verification
 - holder concentration metrics
 - risk score, label, confidence, bullish signals, and red flags
+- structured `redFlagDetails` entries with short `impact` text for plain-English interpretation
 - metadata about which sources were available or unavailable
 - a section-level source map so you can see which providers informed market, contract, holder, community, and risk sections
 - per-source freshness metadata including fetch time, cache status, and a `live` / `recent` / `stale` label

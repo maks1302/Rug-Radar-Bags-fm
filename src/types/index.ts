@@ -57,6 +57,10 @@ export interface RiskAssessment {
   confidence: number;
   bullishSignals: string[];
   redFlags: string[];
+  redFlagDetails: Array<{
+    flag: string;
+    impact: string;
+  }>;
 }
 
 export interface AnalyzeTokenResult {
