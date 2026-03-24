@@ -68,6 +68,13 @@ export interface AnalyzeTokenResult {
   meta: {
     fetchedAt: string;
     dataSources: DataSourceStatus[];
+    sectionSources: {
+      market: DataSourceStatus[];
+      contract: DataSourceStatus[];
+      holders: DataSourceStatus[];
+      community: DataSourceStatus[];
+      risk: DataSourceStatus[];
+    };
     unavailableSources: string[];
   };
 }

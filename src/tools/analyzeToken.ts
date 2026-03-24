@@ -13,6 +13,8 @@ interface AnalyzeTokenInput {
   token_name?: string;
 }
 
+type SectionSourceMap = AnalyzeTokenResult["meta"]["sectionSources"];
+
 function toFreshness(
   sourceMeta?: { fetchedAt: string; ageMs: number; cacheStatus: "hit" | "miss" },
 ): DataSourceStatus["freshness"] | undefined {
@@ -26,6 +28,22 @@ function toFreshness(
     ageSeconds,
     label,
     cacheStatus: sourceMeta.cacheStatus,
+  };
+}
+
+function buildSectionSources(sources: DataSourceStatus[]): SectionSourceMap {
+  const sourceMap = new Map(sources.map((source) => [source.source, source]));
+  const pick = (...names: DataSourceStatus["source"][]) => names.flatMap((name) => {
+    const source = sourceMap.get(name);
+    return source ? [source] : [];
+  });
+
+  return {
+    market: pick("dexscreener"),
+    contract: pick("rugcheck"),
+    holders: pick("helius"),
+    community: pick("bags"),
+    risk: pick("dexscreener", "rugcheck", "helius", "bags"),
   };
 }
 
@@ -186,6 +204,7 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
   const unavailableSources = sources
     .filter((s) => s.status === "unavailable")
     .map((s) => `${s.source}${s.note ? ` (${s.note})` : ""}`);
+  const sectionSources = buildSectionSources(sources);
 
   return {
     token: {
@@ -214,6 +233,7 @@ export async function analyzeToken(input: AnalyzeTokenInput): Promise<AnalyzeTok
     meta: {
       fetchedAt: nowIso(),
       dataSources: sources,
+      sectionSources,
       unavailableSources,
     },
   };
@@ -265,6 +285,18 @@ export function analyzeTokenErrorFallback(input: AnalyzeTokenInput, errorMessage
         { source: "helius", status: "unavailable" },
         { source: "bags", status: "unavailable" },
       ],
+      sectionSources: {
+        market: [{ source: "dexscreener", status: "unavailable" }],
+        contract: [{ source: "rugcheck", status: "unavailable" }],
+        holders: [{ source: "helius", status: "unavailable" }],
+        community: [{ source: "bags", status: "unavailable" }],
+        risk: [
+          { source: "dexscreener", status: "unavailable" },
+          { source: "rugcheck", status: "unavailable" },
+          { source: "helius", status: "unavailable" },
+          { source: "bags", status: "unavailable" },
+        ],
+      },
       unavailableSources: ["all"],
     },
   };

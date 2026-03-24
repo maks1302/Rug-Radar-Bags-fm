@@ -43,6 +43,7 @@ You should care most when several red flags point to the same failure mode, for 
 ## 4. Source Notes
 
 - every result includes source availability metadata
+- `analyze_token` also includes `meta.sectionSources` so you can trace each section back to its upstream providers
 - every source can also include freshness metadata
 - unavailable sources are listed explicitly
 - if key sources are missing, interpret the score conservatively
