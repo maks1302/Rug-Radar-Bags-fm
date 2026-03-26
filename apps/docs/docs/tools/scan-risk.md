@@ -34,13 +34,17 @@ Fast red-flag mode with minimal noise.
 ## What You Receive
 
 - Risk level
+- Confidence score
 - Triggered flags with severity
 - Passed checks
 - Short verdict
+- Source availability metadata so you can see if the scan was partial
 
 ## Why It Exists
 
 This tool is intentionally narrower than `analyze_token`. It is optimized for fast decisions and short shareable outputs.
+
+If confidence is lower or sources are unavailable, treat the result as a fast triage pass rather than a final answer.
 
 ## Typical Prompts
 

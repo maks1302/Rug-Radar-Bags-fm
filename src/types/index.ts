@@ -124,12 +124,14 @@ export interface ScanRiskResult {
   token: { address: string; symbol: string };
   riskLevel: RiskLevel;
   score: number;
+  confidence: number;
   flagsTriggered: Array<{ flag: string; severity: "Low" | "Medium" | "High" | "Extreme"; detail: string }>;
   flagsPassed: Array<{ flag: string; detail: string }>;
   verdict: string;
   meta: {
     fetchedAt: string;
     dataSources: DataSourceStatus[];
+    unavailableSources: string[];
   };
 }
 

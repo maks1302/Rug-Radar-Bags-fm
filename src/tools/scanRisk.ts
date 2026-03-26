@@ -13,6 +13,19 @@ function deriveRiskLevel(score: number): ScanRiskResult["riskLevel"] {
   return "Extreme";
 }
 
+function buildVerdict(flagsTriggeredCount: number, confidence: number, unavailableSources: string[]): string {
+  const baseVerdict =
+    flagsTriggeredCount === 0
+      ? "No major risk flags were triggered, but continue monitoring before entry."
+      : `${flagsTriggeredCount} risk flags triggered. Prioritize position sizing and verify holder/contract data before trading.`;
+
+  if (confidence >= 75 && unavailableSources.length === 0) {
+    return baseVerdict;
+  }
+
+  return `${baseVerdict} Confidence is reduced, so treat this scan as provisional and re-run if timing matters.`;
+}
+
 export async function scanRisk(input: ScanRiskInput): Promise<ScanRiskResult> {
   const address = normalizeInput(input.token_address);
   if (!isLikelySolanaAddress(address)) {
@@ -110,10 +123,7 @@ export async function scanRisk(input: ScanRiskInput): Promise<ScanRiskResult> {
 
   const score = token.risk.score;
   const riskLevel = deriveRiskLevel(score);
-  const verdict =
-    flagsTriggered.length === 0
-      ? "No major risk flags were triggered, but continue monitoring before entry."
-      : `${flagsTriggered.length} risk flags triggered. Prioritize position sizing and verify holder/contract data before trading.`;
+  const verdict = buildVerdict(flagsTriggered.length, token.risk.confidence, token.meta.unavailableSources);
 
   return {
     token: {
@@ -122,12 +132,14 @@ export async function scanRisk(input: ScanRiskInput): Promise<ScanRiskResult> {
     },
     riskLevel,
     score,
+    confidence: token.risk.confidence,
     flagsTriggered,
     flagsPassed,
     verdict,
     meta: {
       fetchedAt: token.meta.fetchedAt,
       dataSources: token.meta.dataSources,
+      unavailableSources: token.meta.unavailableSources,
     },
   };
 }
