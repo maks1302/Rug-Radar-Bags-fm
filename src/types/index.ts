@@ -134,12 +134,33 @@ export interface ScanRiskResult {
 }
 
 export interface CompareTokensResult {
-  tokenA: { symbol: string; riskScore: number; keyMetrics: Record<string, number | string | null> };
-  tokenB: { symbol: string; riskScore: number; keyMetrics: Record<string, number | string | null> };
+  tokenA: {
+    symbol: string;
+    riskScore: number;
+    confidence: number;
+    keyMetrics: Record<string, number | string | null>;
+    meta: {
+      fetchedAt: string;
+      dataSources: DataSourceStatus[];
+      unavailableSources: string[];
+    };
+  };
+  tokenB: {
+    symbol: string;
+    riskScore: number;
+    confidence: number;
+    keyMetrics: Record<string, number | string | null>;
+    meta: {
+      fetchedAt: string;
+      dataSources: DataSourceStatus[];
+      unavailableSources: string[];
+    };
+  };
   comparison: {
     winner: "tokenA" | "tokenB" | "tie";
     reasoning: string;
     categoryWinners: Record<string, "tokenA" | "tokenB" | "tie">;
+    caveats: string[];
   };
   recommendation: string;
 }

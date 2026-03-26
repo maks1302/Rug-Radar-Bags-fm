@@ -7,13 +7,48 @@ interface CompareTokensInput {
   token_b: string;
 }
 
-function winnerByMetric(a: number | null, b: number | null, higherIsBetter = true): "tokenA" | "tokenB" | "tie" {
+type CategoryWinner = CompareTokensResult["comparison"]["categoryWinners"][string];
+type ComparedToken = Awaited<ReturnType<typeof analyzeToken>>;
+
+function winnerByMetric(a: number | null, b: number | null, higherIsBetter = true): CategoryWinner {
   if (a === null && b === null) return "tie";
   if (a === null) return "tokenB";
   if (b === null) return "tokenA";
   if (a === b) return "tie";
   if (higherIsBetter) return a > b ? "tokenA" : "tokenB";
   return a < b ? "tokenA" : "tokenB";
+}
+
+function buildTrustCaveats(label: string, token: ComparedToken): string[] {
+  const caveats: string[] = [];
+
+  if (token.risk.confidence < 75) {
+    caveats.push(`${label} has reduced confidence (${token.risk.confidence}/100), so its comparison data is only partially complete.`);
+  }
+
+  if (token.meta.unavailableSources.length > 0) {
+    caveats.push(`${label} is missing source coverage: ${token.meta.unavailableSources.join(", ")}.`);
+  }
+
+  return caveats;
+}
+
+function buildRecommendation(
+  winner: CompareTokensResult["comparison"]["winner"],
+  tokenA: ComparedToken,
+  tokenB: ComparedToken,
+  caveats: string[],
+): string {
+  const base =
+    winner === "tie"
+      ? "No clear healthier pick. Reduce size and monitor contract + holder changes in real time."
+      : `Healthier pick: ${winner === "tokenA" ? tokenA.token.symbol : tokenB.token.symbol}. Still DYOR and manage risk.`;
+
+  if (caveats.length === 0) {
+    return base;
+  }
+
+  return `${base} Re-run before acting because comparison confidence is uneven or incomplete.`;
 }
 
 export async function compareTokens(input: CompareTokensInput): Promise<CompareTokensResult> {
@@ -43,6 +78,16 @@ export async function compareTokens(input: CompareTokensInput): Promise<CompareT
   const scoreB = Object.values(categories).filter((v) => v === "tokenB").length;
 
   const winner: "tokenA" | "tokenB" | "tie" = scoreA === scoreB ? "tie" : scoreA > scoreB ? "tokenA" : "tokenB";
+  const caveats = [
+    ...buildTrustCaveats(tokenA.token.symbol, tokenA),
+    ...buildTrustCaveats(tokenB.token.symbol, tokenB),
+  ];
+
+  if (Math.abs(tokenA.risk.confidence - tokenB.risk.confidence) >= 25) {
+    caveats.push(
+      `Confidence differs materially between ${tokenA.token.symbol} (${tokenA.risk.confidence}/100) and ${tokenB.token.symbol} (${tokenB.risk.confidence}/100).`,
+    );
+  }
 
   const reasoning =
     winner === "tie"
@@ -55,6 +100,7 @@ export async function compareTokens(input: CompareTokensInput): Promise<CompareT
     tokenA: {
       symbol: tokenA.token.symbol,
       riskScore: tokenA.risk.score,
+      confidence: tokenA.risk.confidence,
       keyMetrics: {
         liquidity: tokenA.market.liquidity,
         volume24h: tokenA.market.volume24h,
@@ -62,10 +108,16 @@ export async function compareTokens(input: CompareTokensInput): Promise<CompareT
         holderTop10: tokenA.holders.top10Percent,
         riskLabel: tokenA.risk.label,
       },
+      meta: {
+        fetchedAt: tokenA.meta.fetchedAt,
+        dataSources: tokenA.meta.dataSources,
+        unavailableSources: tokenA.meta.unavailableSources,
+      },
     },
     tokenB: {
       symbol: tokenB.token.symbol,
       riskScore: tokenB.risk.score,
+      confidence: tokenB.risk.confidence,
       keyMetrics: {
         liquidity: tokenB.market.liquidity,
         volume24h: tokenB.market.volume24h,
@@ -73,15 +125,18 @@ export async function compareTokens(input: CompareTokensInput): Promise<CompareT
         holderTop10: tokenB.holders.top10Percent,
         riskLabel: tokenB.risk.label,
       },
+      meta: {
+        fetchedAt: tokenB.meta.fetchedAt,
+        dataSources: tokenB.meta.dataSources,
+        unavailableSources: tokenB.meta.unavailableSources,
+      },
     },
     comparison: {
       winner,
       reasoning,
       categoryWinners: categories,
+      caveats,
     },
-    recommendation:
-      winner === "tie"
-        ? "No clear healthier pick. Reduce size and monitor contract + holder changes in real time."
-        : `Healthier pick: ${winner === "tokenA" ? tokenA.token.symbol : tokenB.token.symbol}. Still DYOR and manage risk.`,
+    recommendation: buildRecommendation(winner, tokenA, tokenB, caveats),
   };
 }

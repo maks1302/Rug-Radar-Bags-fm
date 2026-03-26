@@ -35,7 +35,10 @@ It counts category wins and returns a healthier pick or a tie.
 ## What You Receive
 
 - Risk scores for both tokens
+- Confidence scores for both tokens
+- Per-token source availability and freshness metadata
 - Category winners (liquidity, concentration, etc.)
+- Comparison caveats when one side has weaker or incomplete upstream coverage
 - Healthier pick with reasoning
 - A recommendation string that summarizes the comparison
 
@@ -43,6 +46,7 @@ It counts category wins and returns a healthier pick or a tie.
 
 - this tool is best for ranking candidates, not proving safety
 - a winner can still be a bad trade if both tokens are weak
+- if the winner has lower confidence or missing sources, treat the result as provisional
 - if the output is a tie, the right answer is often to wait or reduce size
 
 ## Typical Prompts
